@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Live Update - HR MATKA</title>
+
+
+<style>
+
+/* =========================================================
+   HR MATKA - LIVE UPDATE
+   COMPLETE ADMIN PROTECTED REPLACEMENT
+
+   IMPORTANT:
+   - Existing Live Update logic preserved
+   - Admin Login Protection added
+   - Same sessionStorage system as adminlogin.html
+   - Latest update stays Active
+   - User App reads localStorage["liveUpdate"]
+========================================================= */
+
+
+/* =========================================================
+   1. BASIC RESET
+========================================================= */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+
+/* =========================================================
+   2. PAGE
+========================================================= */
+
+body{
+background:#f2f2f2;
+color:#222;
+min-height:100vh;
+padding-bottom:30px;
+}
+
+
+/* =========================================================
+   3. HEADER
+========================================================= */
+
+.header{
+background:#111;
+color:#fff;
+text-align:center;
+padding:18px;
+font-size:25px;
+font-weight:bold;
+box-shadow:0 3px 10px rgba(0,0,0,.25);
+}
+
+
+/* =========================================================
+   4. MAIN CONTAINER
+========================================================= */
+
+.container{
+max-width:650px;
+margin:auto;
+padding:15px;
+}
+
+
+/* =========================================================
+   5. FORM BOX
+========================================================= */
+
+.form-box{
+background:#fff;
+padding:20px;
+margin-top:15px;
+border-radius:14px;
+box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+
+
+.sectionTitle{
+font-size:21px;
+font-weight:bold;
+text-align:center;
+margin-bottom:20px;
+color:#333;
+}
+
+
+label{
+display:block;
+font-size:15px;
+font-weight:bold;
+margin-bottom:7px;
+color:#444;
+}
+
+
+input,
+textarea{
+width:100%;
+padding:13px;
+margin-bottom:17px;
+border:1px solid #ccc;
+border-radius:9px;
+font-size:16px;
+outline:none;
+background:#fff;
+color:#222;
+}
+
+
+input:focus,
+textarea:focus{
+border-color:#ff9800;
+}
+
+
+textarea{
+height:130px;
+resize:vertical;
+}
+
+
+/* =========================================================
+   6. PUBLISH BUTTON
+========================================================= */
+
+.publishBtn{
+width:100%;
+min-height:55px;
+border:none;
+border-radius:9px;
+background:#ff9800;
+color:#fff;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 3px 8px rgba(0,0,0,.18);
+}
+
+
+.publishBtn:active{
+transform:scale(.99);
+}
+
+
+/* =========================================================
+   7. LIVE PREVIEW
+========================================================= */
+
+.previewBox{
+margin-top:18px;
+background:#111;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 3px 10px rgba(0,0,0,.20);
+}
+
+
+.previewHeading{
+background:#e53935;
+color:#fff;
+padding:10px 14px;
+font-weight:bold;
+font-size:15px;
+}
+
+
+.liveTicker{
+padding:15px;
+color:#fff;
+font-size:15px;
+line-height:1.6;
+min-height:60px;
+}
+
+
+.liveLabel{
+color:#ff3b30;
+font-weight:bold;
+margin-right:6px;
+}
+
+
+/* =========================================================
+   8. HISTORY
+========================================================= */
+
+.historyBox{
+background:#fff;
+margin-top:18px;
+padding:18px;
+border-radius:14px;
+box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+
+
+.historyTitle{
+font-size:20px;
+font-weight:bold;
+margin-bottom:15px;
+text-align:center;
+}
+
+
+.updateCard{
+border:1px solid #ddd;
+border-radius:10px;
+padding:14px;
+margin-bottom:12px;
+background:#fafafa;
+}
+
+
+.updateTitle{
+font-size:17px;
+font-weight:bold;
+color:#222;
+margin-bottom:7px;
+}
+
+
+.updateMessage{
+font-size:15px;
+line-height:1.5;
+color:#555;
+word-break:break-word;
+}
+
+
+.updateTime{
+font-size:12px;
+color:#888;
+margin-top:9px;
+}
+
+
+.activeStatus{
+display:inline-block;
+background:#4caf50;
+color:#fff;
+padding:4px 9px;
+border-radius:15px;
+font-size:11px;
+font-weight:bold;
+margin-top:8px;
+}
+
+
+.deleteBtn{
+width:100%;
+padding:9px;
+margin-top:10px;
+border:none;
+border-radius:7px;
+background:#e53935;
+color:#fff;
+font-weight:bold;
+cursor:pointer;
+}
+
+
+.noData{
+text-align:center;
+padding:20px;
+color:#777;
+}
+
+
+/* =========================================================
+   9. BACK BUTTON
+========================================================= */
+
+.back-btn{
+text-align:center;
+margin-top:20px;
+}
+
+
+.back-btn a{
+display:block;
+background:#333;
+color:#fff;
+padding:13px;
+border-radius:9px;
+text-decoration:none;
+font-weight:bold;
+}
+
+
+/* =========================================================
+   10. MOBILE
+========================================================= */
+
+@media(max-width:600px){
+
+.header{
+font-size:22px;
+}
+
+.container{
+padding:10px;
+}
+
+.form-box,
+.historyBox{
+padding:15px;
+}
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HR MATKA - ADMIN LOGIN PROTECTION
+
+     Same exact sessionStorage system as:
+     adminlogin.html
+     protected index.html
+     result.html
+     marketsetting.html
+     bookicutting.html
+     users.html
+     withdrawrequest.html
+     sendnotification.html
+     adminsetting.html
+     ratelist.html
+
+     Valid session = Live Update opens normally.
+     Missing / expired session = adminlogin.html.
+========================================================= -->
+
+<script>
+
+(function(){
+
+    "use strict";
+
+
+    const SESSION_KEY =
+    "hrAdminSession";
+
+
+    const LOGIN_PAGE =
+    "adminlogin.html";
+
+
+    try{
+
+        const raw =
+        sessionStorage.getItem(
+            SESSION_KEY
+        );
+
+
+        const session =
+        raw
+        ?
+        JSON.parse(raw)
+        :
+        null;
+
+
+        const now =
+        Date.now();
+
+
+        if(
+            !session
+            ||
+            session.loggedIn !== true
+            ||
+            !session.expiresAt
+            ||
+            now >= Number(session.expiresAt)
+        ){
+
+            sessionStorage.removeItem(
+                SESSION_KEY
+            );
+
+
+            window.location.replace(
+                LOGIN_PAGE
+            );
+
+
+            return;
+
+        }
+
+
+        console.log(
+            "✅ Live Update Admin Login Protection Connected"
+        );
+
+    }
+    catch(error){
+
+        sessionStorage.removeItem(
+            SESSION_KEY
+        );
+
+
+        window.location.replace(
+            LOGIN_PAGE
+        );
+
+    }
+
+})();
+
+</script>
+
+
+<div class="header">
+
+LIVE UPDATE
+
+</div>
+
+
+<div class="container">
+
+
+<!-- =========================================================
+     1. CREATE LIVE UPDATE
+========================================================= -->
+
+<div class="form-box">
+
+
+<div class="sectionTitle">
+
+Publish Live Update
+
+</div>
+
+
+<label>
+Update Title
+</label>
+
+
+<input
+type="text"
+id="title"
+placeholder="Enter Update Title"
+autocomplete="off">
+
+
+<label>
+Message
+</label>
+
+
+<textarea
+id="message"
+placeholder="Write Live Update Here"></textarea>
+
+
+<button
+type="button"
+class="publishBtn"
+onclick="saveUpdate()">
+
+PUBLISH UPDATE
+
+</button>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     2. USER APP LIVE PREVIEW
+========================================================= -->
+
+<div class="previewBox">
+
+
+<div class="previewHeading">
+
+🔴 LIVE UPDATE PREVIEW
+
+</div>
+
+
+<div
+class="liveTicker"
+id="livePreview">
+
+No Live Update Available
+
+</div>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     3. UPDATE HISTORY
+========================================================= -->
+
+<div class="historyBox">
+
+
+<div class="historyTitle">
+
+Live Update History
+
+</div>
+
+
+<div id="updateHistory">
+
+</div>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     4. BACK TO ADMIN
+========================================================= -->
+
+<div class="back-btn">
+
+
+<a href="index.html">
+
+⬅ Back To Admin Panel
+
+</a>
+
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   HR MATKA - LIVE UPDATE ENGINE
+========================================================= */
+
+
+/* =========================================================
+   1. SAFE LOCAL STORAGE READ
+========================================================= */
+
+function getStorage(
+key,
+fallback
+){
+
+try{
+
+const raw =
+localStorage.getItem(
+key
+);
+
+
+if(!raw){
+
+return fallback;
+
+}
+
+
+return JSON.parse(
+raw
+);
+
+}
+catch(error){
+
+console.warn(
+"Storage Read Error:",
+key,
+error
+);
+
+
+return fallback;
+
+}
+
+}
+
+
+/* =========================================================
+   2. CAPITALIZE FIRST LETTER
+========================================================= */
+
+function capitalizeFirst(text){
+
+text =
+String(
+text || ""
+);
+
+
+if(!text){
+
+return "";
+
+}
+
+
+return (
+text.charAt(0).toUpperCase()
++
+text.slice(1)
+);
+
+}
+
+
+/* =========================================================
+   3. TITLE FIRST LETTER CAPITAL
+========================================================= */
+
+document
+.getElementById(
+"title"
+)
+.addEventListener(
+"input",
+function(){
+
+let cursor =
+this.selectionStart;
+
+
+this.value =
+capitalizeFirst(
+this.value
+);
+
+
+this.setSelectionRange(
+cursor,
+cursor
+);
+
+}
+);
+
+
+/* =========================================================
+   4. MESSAGE FIRST LETTER CAPITAL
+========================================================= */
+
+document
+.getElementById(
+"message"
+)
+.addEventListener(
+"input",
+function(){
+
+let cursor =
+this.selectionStart;
+
+
+this.value =
+capitalizeFirst(
+this.value
+);
+
+
+this.setSelectionRange(
+cursor,
+cursor
+);
+
+}
+);
+
+
+/* =========================================================
+   5. SAVE UPDATE
+========================================================= */
+
+function saveUpdate(){
+
+let title =
+document
+.getElementById(
+"title"
+)
+.value
+.trim();
+
+
+let message =
+document
+.getElementById(
+"message"
+)
+.value
+.trim();
+
+
+/* =====================================================
+   EMPTY CHECK
+===================================================== */
+
+if(
+title === ""
+||
+message === ""
+){
+
+alert(
+"Please Fill Title And Message"
+);
+
+
+return;
+
+}
+
+
+/* =====================================================
+   FINAL CAPITAL FORMAT
+===================================================== */
+
+title =
+capitalizeFirst(
+title
+);
+
+
+message =
+capitalizeFirst(
+message
+);
+
+
+/* =====================================================
+   LOAD OLD UPDATES
+===================================================== */
+
+let updates =
+getStorage(
+"updates",
+[]
+);
+
+
+if(
+!Array.isArray(
+updates
+)
+){
+
+updates = [];
+
+}
+
+
+/* =====================================================
+   DATE + TIME
+===================================================== */
+
+let now =
+new Date();
+
+
+let date =
+now.toLocaleDateString(
+"en-GB"
+);
+
+
+let time =
+now.toLocaleTimeString(
+"en-US",
+{
+hour:"2-digit",
+minute:"2-digit",
+second:"2-digit",
+hour12:true
+}
+)
+.replace(
+/\bam\b/gi,
+"AM"
+)
+.replace(
+/\bpm\b/gi,
+"PM"
+);
+
+
+/* =====================================================
+   NEW UPDATE
+===================================================== */
+
+let newUpdate = {
+
+id:
+Date.now(),
+
+title:
+title,
+
+message:
+message,
+
+date:
+date,
+
+time:
+time,
+
+status:
+"Active",
+
+createdAt:
+now.toISOString()
+
+};
+
+
+/* =====================================================
+   OLD ACTIVE UPDATE INACTIVE
+   Only latest update stays active
+===================================================== */
+
+updates.forEach(
+function(item){
+
+item.status =
+"Inactive";
+
+}
+);
+
+
+/* =====================================================
+   SAVE NEW UPDATE
+===================================================== */
+
+updates.push(
+newUpdate
+);
+
+
+localStorage.setItem(
+
+"updates",
+
+JSON.stringify(
+updates
+)
+
+);
+
+
+/* =====================================================
+   SAVE CURRENT LIVE UPDATE
+   User App can read this directly
+===================================================== */
+
+localStorage.setItem(
+
+"liveUpdate",
+
+JSON.stringify(
+newUpdate
+)
+
+);
+
+
+/* =====================================================
+   CLEAR FORM
+===================================================== */
+
+document
+.getElementById(
+"title"
+)
+.value =
+"";
+
+
+document
+.getElementById(
+"message"
+)
+.value =
+"";
+
+
+/* =====================================================
+   REFRESH SCREEN
+===================================================== */
+
+loadLivePreview();
+
+
+loadUpdateHistory();
+
+
+alert(
+"Live Update Published Successfully"
+);
+
+}
+
+
+/* =========================================================
+   6. LOAD LIVE PREVIEW
+========================================================= */
+
+function loadLivePreview(){
+
+let liveUpdate =
+getStorage(
+"liveUpdate",
+null
+);
+
+
+let preview =
+document
+.getElementById(
+"livePreview"
+);
+
+
+if(!liveUpdate){
+
+preview.innerHTML =
+"No Live Update Available";
+
+
+return;
+
+}
+
+
+preview.innerHTML =
+
+'<span class="liveLabel">LIVE :</span>'
++
+"<strong>"
++
+escapeHTML(
+liveUpdate.title || ""
+)
++
+"</strong> - "
++
+escapeHTML(
+liveUpdate.message || ""
+);
+
+}
+
+
+/* =========================================================
+   7. LOAD HISTORY
+========================================================= */
+
+function loadUpdateHistory(){
+
+let updates =
+getStorage(
+"updates",
+[]
+);
+
+
+if(
+!Array.isArray(
+updates
+)
+){
+
+updates = [];
+
+}
+
+
+let history =
+document
+.getElementById(
+"updateHistory"
+);
+
+
+history.innerHTML =
+"";
+
+
+if(
+updates.length === 0
+){
+
+history.innerHTML =
+
+'<div class="noData">No Update History Found</div>';
+
+
+return;
+
+}
+
+
+/* Latest first */
+
+let reversed =
+updates
+.slice()
+.reverse();
+
+
+reversed.forEach(
+function(item){
+
+let statusHTML =
+"";
+
+
+if(
+item.status ===
+"Active"
+){
+
+statusHTML =
+
+'<div class="activeStatus">ACTIVE</div>';
+
+}
+
+
+history.innerHTML += `
+
+<div class="updateCard">
+
+<div class="updateTitle">
+${escapeHTML(item.title || "")}
+</div>
+
+<div class="updateMessage">
+${escapeHTML(item.message || "")}
+</div>
+
+<div class="updateTime">
+${escapeHTML(item.date || "-")}
+&nbsp; | &nbsp;
+${escapeHTML(item.time || "-")}
+</div>
+
+${statusHTML}
+
+<button
+type="button"
+class="deleteBtn"
+onclick="deleteUpdate(${Number(item.id)})">
+
+DELETE
+
+</button>
+
+</div>
+
+`;
+
+}
+);
+
+}
+
+
+/* =========================================================
+   8. DELETE UPDATE
+========================================================= */
+
+function deleteUpdate(id){
+
+if(
+!confirm(
+"Do You Want To Delete This Live Update?"
+)
+){
+
+return;
+
+}
+
+
+let updates =
+getStorage(
+"updates",
+[]
+);
+
+
+if(
+!Array.isArray(
+updates
+)
+){
+
+updates = [];
+
+}
+
+
+updates =
+updates.filter(
+function(item){
+
+return (
+Number(
+item.id
+)
+!==
+Number(
+id
+)
+);
+
+}
+);
+
+
+/* =====================================================
+   RESET ACTIVE STATUS
+===================================================== */
+
+updates.forEach(
+function(item){
+
+item.status =
+"Inactive";
+
+}
+);
+
+
+/* Latest remaining becomes active */
+
+if(
+updates.length > 0
+){
+
+updates[
+updates.length - 1
+]
+.status =
+"Active";
+
+
+localStorage.setItem(
+
+"liveUpdate",
+
+JSON.stringify(
+updates[
+updates.length - 1
+]
+)
+
+);
+
+}
+else{
+
+localStorage.removeItem(
+"liveUpdate"
+);
+
+}
+
+
+localStorage.setItem(
+
+"updates",
+
+JSON.stringify(
+updates
+)
+
+);
+
+
+loadLivePreview();
+
+
+loadUpdateHistory();
+
+}
+
+
+/* =========================================================
+   9. SAFE DISPLAY TEXT
+========================================================= */
+
+function escapeHTML(value){
+
+return String(
+value ?? ""
+)
+
+.replace(
+/&/g,
+"&amp;"
+)
+
+.replace(
+/</g,
+"&lt;"
+)
+
+.replace(
+/>/g,
+"&gt;"
+)
+
+.replace(
+/"/g,
+"&quot;"
+)
+
+.replace(
+/'/g,
+"&#039;"
+);
+
+}
+
+
+/* =========================================================
+   10. LIVE UPDATE FROM OTHER TAB
+========================================================= */
+
+window.addEventListener(
+"storage",
+function(event){
+
+if(
+event.key ===
+"updates"
+||
+event.key ===
+"liveUpdate"
+){
+
+loadLivePreview();
+
+
+loadUpdateHistory();
+
+}
+
+}
+);
+
+
+/* =========================================================
+   11. FIRST LOAD
+========================================================= */
+
+loadLivePreview();
+
+
+loadUpdateHistory();
+
+
+/* =========================================================
+   12. CONSOLE READY
+========================================================= */
+
+console.log(
+"✅ Live Update Final Connected Successfully"
+);
+
+
+console.log(
+"✅ Live Update Admin Login Protection Connected"
+);
+
+
+console.log(
+"✅ Live Update History + Active Update Connected"
+);
+
+
+console.log(
+"✅ User App liveUpdate Storage Connected"
+);
+
+</script>
+
+
+</body>
+
+</html>

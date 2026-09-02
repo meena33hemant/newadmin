@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+Send Notification - HR MATKA
+</title>
+
+
+<style>
+
+/* =========================================================
+   HR MATKA - SEND NOTIFICATION
+   COMPLETE ADMIN PROTECTED REPLACEMENT
+========================================================= */
+
+
+/* =========================================================
+   1. BASIC RESET
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+
+/* =========================================================
+   2. PAGE
+========================================================= */
+
+body{
+    background:#f2f2f2;
+    color:#222;
+    min-height:100vh;
+    padding:20px;
+}
+
+
+/* =========================================================
+   3. MAIN CONTAINER
+========================================================= */
+
+.container{
+    max-width:700px;
+    margin:auto;
+}
+
+
+/* =========================================================
+   4. PAGE TITLE
+========================================================= */
+
+.page-title{
+    background:#111;
+    color:#fff;
+    text-align:center;
+    padding:18px;
+    border-radius:12px;
+    font-size:27px;
+    margin-bottom:18px;
+    box-shadow:0 3px 10px rgba(0,0,0,.20);
+}
+
+
+/* =========================================================
+   5. FORM BOX
+========================================================= */
+
+.form-box{
+    background:#fff;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+    margin-bottom:20px;
+}
+
+
+.form-box label{
+    display:block;
+    font-weight:bold;
+    font-size:16px;
+    margin-top:15px;
+    margin-bottom:7px;
+}
+
+
+.form-box label:first-child{
+    margin-top:0;
+}
+
+
+.form-box input,
+.form-box textarea{
+    width:100%;
+    padding:13px;
+    font-size:16px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    outline:none;
+}
+
+
+.form-box textarea{
+    min-height:130px;
+    resize:vertical;
+}
+
+
+.form-box input:focus,
+.form-box textarea:focus{
+    border-color:#673ab7;
+}
+
+
+/* =========================================================
+   6. SEND BUTTON
+========================================================= */
+
+.send-btn{
+    width:100%;
+    margin-top:20px;
+    padding:14px;
+    border:none;
+    border-radius:9px;
+    background:#673ab7;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+
+.send-btn:hover{
+    background:#5e35b1;
+}
+
+
+.send-btn:active{
+    transform:scale(.99);
+}
+
+
+/* =========================================================
+   7. NOTIFICATION HISTORY
+========================================================= */
+
+.history-box{
+    background:#fff;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+
+
+.history-title{
+    font-size:21px;
+    margin-bottom:15px;
+    color:#333;
+}
+
+
+.notification-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+
+/* =========================================================
+   8. SINGLE NOTIFICATION CARD
+========================================================= */
+
+.notification-card{
+    background:#f8f8f8;
+    border-left:5px solid #673ab7;
+    border-radius:10px;
+    padding:15px;
+    box-shadow:0 2px 6px rgba(0,0,0,.10);
+}
+
+
+.notification-card h3{
+    font-size:18px;
+    margin-bottom:7px;
+    color:#222;
+}
+
+
+.notification-message{
+    font-size:15px;
+    line-height:1.5;
+    color:#444;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+
+.notification-date{
+    font-size:12px;
+    color:#888;
+    margin-top:10px;
+}
+
+
+/* =========================================================
+   9. DELETE BUTTON
+========================================================= */
+
+.delete-btn{
+    margin-top:12px;
+    background:#f44336;
+    color:#fff;
+    border:none;
+    padding:8px 15px;
+    border-radius:7px;
+    font-size:14px;
+    cursor:pointer;
+}
+
+
+.delete-btn:hover{
+    background:#d32f2f;
+}
+
+
+/* =========================================================
+   10. NO DATA
+========================================================= */
+
+.no-data{
+    text-align:center;
+    padding:25px 10px;
+    color:#777;
+    font-size:15px;
+}
+
+
+/* =========================================================
+   11. BACK BUTTON
+========================================================= */
+
+.back-btn{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    padding:13px;
+    background:#34495e;
+    color:#fff;
+    text-decoration:none;
+    border-radius:9px;
+    font-weight:bold;
+}
+
+
+/* =========================================================
+   12. MOBILE
+========================================================= */
+
+@media(max-width:600px){
+
+    body{
+        padding:10px;
+    }
+
+    .page-title{
+        font-size:22px;
+        padding:15px;
+    }
+
+    .form-box,
+    .history-box{
+        padding:15px;
+    }
+
+    .form-box input,
+    .form-box textarea{
+        font-size:15px;
+    }
+
+    .notification-card h3{
+        font-size:17px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HR MATKA - ADMIN LOGIN PROTECTION
+
+     Same exact sessionStorage system as:
+     adminlogin.html
+     index.html
+     result.html
+     marketsetting.html
+     bookicutting.html
+     users.html
+     withdrawrequest.html
+
+     Valid session  = Send Notification opens normally.
+     Missing/expired session = adminlogin.html.
+========================================================= -->
+
+<script>
+
+(function(){
+
+    "use strict";
+
+    const SESSION_KEY =
+    "hrAdminSession";
+
+
+    const LOGIN_PAGE =
+    "adminlogin.html";
+
+
+    try{
+
+        const raw =
+        sessionStorage.getItem(
+            SESSION_KEY
+        );
+
+
+        const session =
+        raw
+        ?
+        JSON.parse(raw)
+        :
+        null;
+
+
+        const now =
+        Date.now();
+
+
+        if(
+            !session
+            ||
+            session.loggedIn !== true
+            ||
+            !session.expiresAt
+            ||
+            now >= Number(session.expiresAt)
+        ){
+
+            sessionStorage.removeItem(
+                SESSION_KEY
+            );
+
+
+            window.location.replace(
+                LOGIN_PAGE
+            );
+
+
+            return;
+
+        }
+
+
+        console.log(
+            "✅ Send Notification Admin Login Protection Connected"
+        );
+
+    }
+    catch(error){
+
+        sessionStorage.removeItem(
+            SESSION_KEY
+        );
+
+
+        window.location.replace(
+            LOGIN_PAGE
+        );
+
+    }
+
+})();
+
+</script>
+
+
+<div class="container">
+
+
+<!-- =========================================================
+     PAGE HEADING
+========================================================= -->
+
+<h1 class="page-title">
+
+    Send Notification
+
+</h1>
+
+
+<!-- =========================================================
+     SEND NOTIFICATION FORM
+========================================================= -->
+
+<div class="form-box">
+
+
+<label>
+    Notification Title
+</label>
+
+
+<input
+    type="text"
+    id="notificationTitle"
+    placeholder="Enter Notification Title"
+    maxlength="80"
+>
+
+
+<label>
+    Notification Message
+</label>
+
+
+<textarea
+    id="notificationMessage"
+    placeholder="Write Notification Message..."
+    maxlength="500"
+></textarea>
+
+
+<button
+    class="send-btn"
+    type="button"
+    onclick="sendNotification()"
+>
+
+    🔔 Send Notification
+
+</button>
+
+
+</div>
+
+
+<!-- =========================================================
+     SENT NOTIFICATION HISTORY
+========================================================= -->
+
+<div class="history-box">
+
+
+<h2 class="history-title">
+
+    Sent Notifications
+
+</h2>
+
+
+<div
+    id="notificationList"
+    class="notification-list"
+>
+</div>
+
+
+</div>
+
+
+<!-- =========================================================
+     BACK TO ADMIN
+========================================================= -->
+
+<a
+    href="index.html"
+    class="back-btn"
+>
+
+    ← Back To Admin Panel
+
+</a>
+
+
+</div>
+
+
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   1. SAFE LOCAL STORAGE
+========================================================= */
+
+function getNotifications(){
+
+    try{
+
+        return JSON.parse(
+
+            localStorage.getItem(
+                "notifications"
+            )
+
+        )
+        ||
+        [];
+
+    }
+    catch(error){
+
+        console.warn(
+            "Notification Storage Read Error:",
+            error
+        );
+
+
+        return [];
+
+    }
+
+}
+
+
+/* =========================================================
+   2. FIRST LETTER CAPITAL
+========================================================= */
+
+function firstLetterCapital(value){
+
+    const text =
+    String(
+        value || ""
+    )
+    .trim();
+
+
+    if(
+        text === ""
+    ){
+
+        return "";
+
+    }
+
+
+    return (
+
+        text.charAt(0)
+        .toUpperCase()
+
+        +
+
+        text.slice(1)
+
+    );
+
+}
+
+
+/* =========================================================
+   3. SEND NOTIFICATION
+========================================================= */
+
+function sendNotification(){
+
+
+    const title =
+    firstLetterCapital(
+
+        document
+        .getElementById(
+            "notificationTitle"
+        )
+        .value
+
+    );
+
+
+    const message =
+    firstLetterCapital(
+
+        document
+        .getElementById(
+            "notificationMessage"
+        )
+        .value
+
+    );
+
+
+    /* =====================================================
+       VALIDATION
+    ===================================================== */
+
+    if(
+        title === ""
+    ){
+
+        alert(
+            "Please Enter Notification Title"
+        );
+
+
+        return;
+
+    }
+
+
+    if(
+        message === ""
+    ){
+
+        alert(
+            "Please Enter Notification Message"
+        );
+
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       GET OLD NOTIFICATIONS
+    ===================================================== */
+
+    let notifications =
+    getNotifications();
+
+
+    /* =====================================================
+       CREATE DATE + TIME
+    ===================================================== */
+
+    const now =
+    new Date();
+
+
+    /* =====================================================
+       CREATE NEW NOTIFICATION
+    ===================================================== */
+
+    const newNotification = {
+
+        id:
+        Date.now(),
+
+        title:
+        title,
+
+        message:
+        message,
+
+        date:
+        now.toLocaleDateString(
+            "en-GB"
+        ),
+
+        time:
+        now.toLocaleTimeString(
+            "en-US",
+            {
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit",
+                hour12:true
+            }
+        )
+        .replace(
+            /\bam\b/gi,
+            "AM"
+        )
+        .replace(
+            /\bpm\b/gi,
+            "PM"
+        ),
+
+        createdAt:
+        now.toISOString()
+
+    };
+
+
+    /* =====================================================
+       SAVE
+    ===================================================== */
+
+    notifications.push(
+        newNotification
+    );
+
+
+    localStorage.setItem(
+
+        "notifications",
+
+        JSON.stringify(
+            notifications
+        )
+
+    );
+
+
+    /* =====================================================
+       CLEAR FORM
+    ===================================================== */
+
+    document
+    .getElementById(
+        "notificationTitle"
+    )
+    .value =
+    "";
+
+
+    document
+    .getElementById(
+        "notificationMessage"
+    )
+    .value =
+    "";
+
+
+    alert(
+        "Notification Sent Successfully"
+    );
+
+
+    loadNotifications();
+
+}
+
+
+/* =========================================================
+   4. LOAD NOTIFICATION HISTORY
+========================================================= */
+
+function loadNotifications(){
+
+    const notifications =
+    getNotifications();
+
+
+    const list =
+    document
+    .getElementById(
+        "notificationList"
+    );
+
+
+    list.innerHTML =
+    "";
+
+
+    /* =====================================================
+       NO DATA
+    ===================================================== */
+
+    if(
+        notifications.length ===
+        0
+    ){
+
+        list.innerHTML = `
+
+            <div class="no-data">
+
+                No Notification Sent Yet
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       NEWEST FIRST
+    ===================================================== */
+
+    const reversed =
+    [
+        ...notifications
+    ]
+    .reverse();
+
+
+    reversed.forEach(
+
+        function(item){
+
+
+            const card =
+            document.createElement(
+                "div"
+            );
+
+
+            card.className =
+            "notification-card";
+
+
+            const title =
+            document.createElement(
+                "h3"
+            );
+
+
+            title.textContent =
+            item.title
+            ||
+            "Notification";
+
+
+            const message =
+            document.createElement(
+                "div"
+            );
+
+
+            message.className =
+            "notification-message";
+
+
+            message.textContent =
+            item.message
+            ||
+            "";
+
+
+            const date =
+            document.createElement(
+                "div"
+            );
+
+
+            date.className =
+            "notification-date";
+
+
+            date.textContent =
+            (
+                item.date
+                ||
+                ""
+            )
+            +
+            "  "
+            +
+            (
+                item.time
+                ||
+                ""
+            );
+
+
+            const deleteButton =
+            document.createElement(
+                "button"
+            );
+
+
+            deleteButton.className =
+            "delete-btn";
+
+
+            deleteButton.textContent =
+            "Delete";
+
+
+            deleteButton.onclick =
+            function(){
+
+                deleteNotification(
+                    item.id
+                );
+
+            };
+
+
+            card.appendChild(
+                title
+            );
+
+
+            card.appendChild(
+                message
+            );
+
+
+            card.appendChild(
+                date
+            );
+
+
+            card.appendChild(
+                deleteButton
+            );
+
+
+            list.appendChild(
+                card
+            );
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   5. DELETE NOTIFICATION
+========================================================= */
+
+function deleteNotification(id){
+
+    const confirmDelete =
+    confirm(
+        "Delete This Notification?"
+    );
+
+
+    if(
+        !confirmDelete
+    ){
+
+        return;
+
+    }
+
+
+    let notifications =
+    getNotifications();
+
+
+    notifications =
+    notifications.filter(
+
+        function(item){
+
+            return (
+                item.id !==
+                id
+            );
+
+        }
+
+    );
+
+
+    localStorage.setItem(
+
+        "notifications",
+
+        JSON.stringify(
+            notifications
+        )
+
+    );
+
+
+    loadNotifications();
+
+}
+
+
+/* =========================================================
+   6. FIRST LOAD
+========================================================= */
+
+loadNotifications();
+
+
+/* =========================================================
+   7. CONSOLE READY
+========================================================= */
+
+console.log(
+    "✅ Send Notification Connected"
+);
+
+
+console.log(
+    "✅ Notification History + Delete Connected"
+);
+
+
+console.log(
+    "✅ 12-Hour AM/PM Notification Time Connected"
+);
+
+</script>
+
+
+</body>
+
+</html>

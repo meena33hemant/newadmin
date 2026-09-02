@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login - HR MATKA</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    background:linear-gradient(145deg,#101522,#1e2940);
+}
+
+.login-card{
+    width:100%;
+    max-width:430px;
+    background:#fff;
+    border-radius:22px;
+    padding:26px 22px;
+    box-shadow:0 18px 45px rgba(0,0,0,.35);
+}
+
+.logo-circle{
+    width:82px;
+    height:82px;
+    margin:0 auto 14px;
+    border-radius:50%;
+    border:3px solid #d6ad3c;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+    font-weight:bold;
+    color:#1f2d3d;
+    background:#fafafa;
+}
+
+h1{
+    text-align:center;
+    font-size:28px;
+    margin-bottom:6px;
+    color:#17233a;
+}
+
+.subtitle{
+    text-align:center;
+    color:#6b7280;
+    margin-bottom:24px;
+    font-size:14px;
+}
+
+.field{
+    margin-bottom:16px;
+}
+
+.field label{
+    display:block;
+    margin-bottom:7px;
+    font-size:14px;
+    font-weight:bold;
+    color:#344054;
+}
+
+.field input{
+    width:100%;
+    height:52px;
+    border:1px solid #cfd5df;
+    border-radius:11px;
+    padding:0 14px;
+    font-size:17px;
+    outline:none;
+}
+
+.field input:focus{
+    border-color:#3657c8;
+    box-shadow:0 0 0 3px rgba(54,87,200,.12);
+}
+
+.password-wrap{
+    position:relative;
+}
+
+.password-wrap input{
+    padding-right:72px;
+}
+
+.show-btn{
+    position:absolute;
+    right:8px;
+    top:8px;
+    height:36px;
+    border:none;
+    background:#eef1f6;
+    border-radius:8px;
+    padding:0 11px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.login-btn{
+    width:100%;
+    height:54px;
+    border:none;
+    border-radius:11px;
+    background:#3657c8;
+    color:#fff;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:5px;
+}
+
+.login-btn:active{
+    transform:scale(.99);
+}
+
+.error{
+    min-height:22px;
+    margin-top:13px;
+    text-align:center;
+    color:#d32f2f;
+    font-weight:bold;
+    font-size:14px;
+}
+
+.note{
+    margin-top:18px;
+    padding:11px;
+    border-radius:9px;
+    background:#fff8e1;
+    color:#6d5412;
+    font-size:12px;
+    line-height:1.45;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-card">
+
+    <div class="logo-circle">HR</div>
+
+    <h1>Admin Login</h1>
+
+    <div class="subtitle">
+        HR MATKA Control Panel
+    </div>
+
+    <form id="adminLoginForm" autocomplete="off">
+
+        <div class="field">
+            <label for="adminId">Admin ID</label>
+            <input
+                type="text"
+                id="adminId"
+                placeholder="Enter Admin ID"
+                autocomplete="username"
+                required>
+        </div>
+
+        <div class="field">
+            <label for="adminPassword">Password</label>
+
+            <div class="password-wrap">
+                <input
+                    type="password"
+                    id="adminPassword"
+                    placeholder="Enter Password"
+                    autocomplete="current-password"
+                    required>
+
+                <button
+                    class="show-btn"
+                    type="button"
+                    onclick="togglePassword()">
+                    SHOW
+                </button>
+            </div>
+        </div>
+
+        <button
+            type="submit"
+            class="login-btn">
+            LOGIN TO ADMIN
+        </button>
+
+        <div
+            id="loginError"
+            class="error">
+        </div>
+
+    </form>
+
+    <div class="note">
+        Local testing login. Hosting se pehle is login ko server-side authentication se secure karna hoga.
+    </div>
+
+</div>
+
+<script>
+"use strict";
+
+/* =========================================================
+   HR MATKA ADMIN LOGIN
+   LOCAL DEVELOPMENT SESSION
+
+   IMPORTANT:
+   Neeche ADMIN_ID aur ADMIN_PASSWORD ko apne test login
+   ke hisab se badal sakte hain.
+========================================================= */
+
+const ADMIN_ID = "admin";
+const ADMIN_PASSWORD = "HR@2026";
+
+const SESSION_KEY = "hrAdminSession";
+const SESSION_HOURS = 12;
+
+
+function togglePassword(){
+
+    const input =
+    document.getElementById(
+        "adminPassword"
+    );
+
+    const button =
+    document.querySelector(
+        ".show-btn"
+    );
+
+    if(
+        input.type === "password"
+    ){
+
+        input.type = "text";
+        button.textContent = "HIDE";
+
+    }
+    else{
+
+        input.type = "password";
+        button.textContent = "SHOW";
+
+    }
+
+}
+
+
+function openAdminSession(){
+
+    const now = Date.now();
+
+    const session = {
+        loggedIn:true,
+        loginAt:now,
+        expiresAt:
+            now +
+            (SESSION_HOURS * 60 * 60 * 1000)
+    };
+
+    sessionStorage.setItem(
+        SESSION_KEY,
+        JSON.stringify(session)
+    );
+
+    window.location.replace(
+        "index.html"
+    );
+
+}
+
+
+function existingSessionCheck(){
+
+    try{
+
+        const raw =
+        sessionStorage.getItem(
+            SESSION_KEY
+        );
+
+        const session =
+        raw
+        ?
+        JSON.parse(raw)
+        :
+        null;
+
+        if(
+            session &&
+            session.loggedIn === true &&
+            Number(session.expiresAt) > Date.now()
+        ){
+
+            window.location.replace(
+                "index.html"
+            );
+
+        }
+
+    }
+    catch(error){
+
+        sessionStorage.removeItem(
+            SESSION_KEY
+        );
+
+    }
+
+}
+
+
+document
+.getElementById(
+    "adminLoginForm"
+)
+.addEventListener(
+    "submit",
+    function(event){
+
+        event.preventDefault();
+
+        const id =
+        document
+        .getElementById(
+            "adminId"
+        )
+        .value
+        .trim();
+
+        const password =
+        document
+        .getElementById(
+            "adminPassword"
+        )
+        .value;
+
+        const errorBox =
+        document.getElementById(
+            "loginError"
+        );
+
+        if(
+            id === ADMIN_ID &&
+            password === ADMIN_PASSWORD
+        ){
+
+            errorBox.textContent = "";
+
+            openAdminSession();
+
+            return;
+
+        }
+
+        errorBox.textContent =
+        "Invalid Admin ID or Password";
+
+    }
+);
+
+
+existingSessionCheck();
+
+console.log(
+    "HR MATKA Admin Login Connected"
+);
+
+</script>
+
+</body>
+</html>

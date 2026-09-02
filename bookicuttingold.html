@@ -1,0 +1,1889 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booki Cutting</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f5f8;
+color:#222;
+padding:16px;
+}
+
+.container{
+max-width:760px;
+margin:auto;
+}
+
+.header{
+background:#263746;
+color:#fff;
+padding:17px;
+border-radius:10px;
+font-size:24px;
+font-weight:bold;
+text-align:center;
+margin-bottom:18px;
+}
+
+/* DATE */
+
+.date-wrap{
+    position:relative;
+    margin-bottom:16px;
+    height:58px;
+}
+
+.date-box{
+    width:100%;
+    height:58px;
+    background:#eef0f3;
+    border:2px solid #d7dbe1;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    font-size:22px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 2px 7px rgba(0,0,0,.08);
+    user-select:none;
+}
+
+.date-wrap input{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:1px;
+    height:1px;
+    opacity:0;
+    border:0;
+    pointer-events:none;
+}
+
+/* TOP BUTTONS */
+
+.top-buttons{
+display:flex;
+gap:18px;
+margin-bottom:25px;
+}
+
+.top-buttons button{
+flex:1;
+padding:17px 10px;
+background:#ffc107;
+border:none;
+border-radius:6px;
+font-size:20px;
+cursor:pointer;
+}
+
+/* MARKET */
+
+.market-select{
+width:100%;
+padding:14px;
+border:1px solid #ddd;
+border-radius:7px;
+font-size:17px;
+margin-bottom:22px;
+background:#fff;
+}
+
+/* MARKET CARD */
+
+.market-box{
+background:#fff;
+padding:20px;
+border-radius:10px;
+margin-bottom:24px;
+box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.market-title{
+font-size:30px;
+font-style:italic;
+font-weight:500;
+text-align:center;
+margin-bottom:16px;
+}
+
+.session-title{
+font-size:22px;
+font-weight:bold;
+text-align:center;
+margin-bottom:18px;
+}
+
+.copy-btn{
+display:block;
+margin:0 auto 20px;
+background:#1689ee;
+color:#fff;
+border:none;
+padding:14px 20px;
+border-radius:6px;
+font-size:18px;
+cursor:pointer;
+}
+
+.data-text{
+font-family:monospace;
+font-size:19px;
+line-height:1.55;
+white-space:pre-wrap;
+overflow-wrap:anywhere;
+}
+
+.total-box{
+background:#fafafa;
+padding:16px;
+margin-top:16px;
+font-size:21px;
+text-align:center;
+border-radius:5px;
+}
+
+.back-btn{
+display:block;
+text-align:center;
+text-decoration:none;
+background:#34495e;
+color:#fff;
+padding:14px;
+border-radius:7px;
+font-weight:bold;
+margin-top:15px;
+}
+
+/* POPUP */
+
+.popup{
+display:none;
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.6);
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+.popup-box{
+width:92%;
+max-width:420px;
+background:#f3f4f8;
+padding:25px;
+border-radius:24px;
+}
+
+.popup-box h2{
+font-size:24px;
+margin-bottom:28px;
+}
+
+.popup-box input{
+width:100%;
+font-size:25px;
+padding:10px 5px;
+border:none;
+border-bottom:3px solid #49688f;
+background:transparent;
+outline:none;
+}
+
+.popup-actions{
+display:flex;
+justify-content:flex-end;
+gap:18px;
+margin-top:35px;
+}
+
+.popup-actions button{
+border:none;
+background:transparent;
+font-size:18px;
+font-weight:bold;
+color:#425d83;
+cursor:pointer;
+}
+
+/* INFO */
+
+.cut-info{
+background:#fff3cd;
+border-radius:7px;
+padding:12px;
+margin-bottom:15px;
+text-align:center;
+font-weight:bold;
+display:none;
+}
+
+
+/* =====================================
+   14 MARKET USER-APP STYLE CARD LIST
+   Original calendar/cutting logic preserved
+===================================== */
+
+.market-list-shell{
+    background:#ed1460;
+    padding:12px;
+    border-radius:14px;
+    margin-top:8px;
+}
+
+.market-list-title{
+    text-align:center;
+    color:#fff;
+    font-size:22px;
+    font-weight:bold;
+    margin:4px 0 14px;
+}
+
+.market-cards{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:14px;
+    margin-bottom:0;
+}
+
+.market-card{
+    background:#fff;
+    border-radius:18px;
+    padding:18px 20px;
+    min-height:128px;
+    box-shadow:0 3px 8px rgba(0,0,0,.15);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    cursor:pointer;
+    border:none;
+    position:relative;
+    overflow:hidden;
+}
+
+.market-card::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:18px;
+    bottom:18px;
+    width:5px;
+    background:#d7b63c;
+}
+
+.market-card.active{
+    outline:3px solid #ffc107;
+}
+
+.market-card-left{
+    padding-left:10px;
+    min-width:0;
+}
+
+.market-card-name{
+    font-size:23px;
+    font-weight:800;
+    margin-bottom:8px;
+    color:#111;
+}
+
+.market-card-result{
+    font-size:22px;
+    font-weight:800;
+    color:#1656a3;
+    letter-spacing:.5px;
+    margin-bottom:7px;
+}
+
+.market-card-time{
+    font-size:16px;
+    color:#999;
+    font-weight:600;
+}
+
+.market-card-right{
+    min-width:115px;
+    text-align:center;
+}
+
+.market-status-circle{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 6px;
+    color:#fff;
+    font-size:26px;
+    font-weight:bold;
+    box-shadow:0 2px 5px rgba(0,0,0,.12);
+}
+
+.status-running{background:#35bf76;}
+.status-running-close{background:#e8a137;}
+.status-closed{background:#f04747;}
+
+.market-status-text{
+    font-size:14px;
+    line-height:1.05;
+    font-weight:800;
+    color:#111;
+}
+
+.market-card-arrow{
+    position:absolute;
+    right:10px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#bbb;
+    font-size:28px;
+    font-weight:bold;
+}
+
+#marketSelect{
+    display:none;
+}
+
+.detail-back-wrap{
+    display:none;
+    margin:0 0 12px;
+}
+
+.detail-back-btn{
+    width:100%;
+    border:none;
+    border-radius:8px;
+    background:#263746;
+    color:#fff;
+    padding:11px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+@media(max-width:600px){
+
+body{
+padding:10px;
+}
+
+.top-buttons{
+gap:10px;
+}
+
+.top-buttons button{
+font-size:17px;
+}
+
+.market-title{
+font-size:27px;
+}
+
+.data-text{
+font-size:17px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+BOOKI CUTTING
+</div>
+
+<div class="date-wrap">
+
+<div class="date-box" role="button" tabindex="0" onclick="openBookiCalendar()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openBookiCalendar();}">
+📅
+<span id="dateText"></span>
+</div>
+
+<input
+type="date"
+id="cuttingDate"
+onchange="dateChanged()">
+
+</div>
+
+<div id="detailBackWrap" class="detail-back-wrap"><button class="detail-back-btn" onclick="backToMarketCards()">← BACK TO MARKET LIST</button></div>
+
+<div id="detailControls" class="top-buttons" style="display:none;">
+
+<button onclick="showMainData()">
+MAIN DATA
+</button>
+
+<button onclick="openCuttingPopup()">
+CUTTING
+</button>
+
+</div>
+
+<div class="cut-info" id="cutInfo"></div>
+
+<div id="marketListShell" class="market-list-shell">
+
+<div class="market-list-title">SELECT MARKET</div>
+
+<div id="marketCards" class="market-cards"></div>
+
+</div>
+
+<select
+id="marketSelect"
+class="market-select"
+onchange="loadMarketCutting()">
+
+<option value="">
+Select Market
+</option>
+
+</select>
+
+<div id="cuttingArea" style="display:none;"></div>
+
+<a
+href="index.html"
+class="back-btn">
+← Back To Admin Panel
+</a>
+
+</div>
+
+<!-- CUTTING POPUP -->
+
+<div
+class="popup"
+id="cuttingPopup">
+
+<div class="popup-box">
+
+<h2>
+Enter Cutting Percent %
+</h2>
+
+<input
+type="number"
+id="cutPercent"
+placeholder="30"
+min="0"
+max="100"
+step="1">
+
+<div class="popup-actions">
+
+<button onclick="closeCuttingPopup()">
+Cancel
+</button>
+
+<button onclick="applyCutting()">
+OK
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+// =====================================
+// BOOKI CUTTING FINAL
+// =====================================
+
+let activeCutPercent = 0;
+
+
+// =====================================
+// DATE FORMAT
+// =====================================
+
+function getTodayISO(){
+
+let d = new Date();
+
+let y = d.getFullYear();
+
+let m =
+String(d.getMonth()+1)
+.padStart(2,"0");
+
+let day =
+String(d.getDate())
+.padStart(2,"0");
+
+return y+"-"+m+"-"+day;
+
+}
+
+
+function isoToDisplay(iso){
+
+if(!iso){
+return "";
+}
+
+let p = iso.split("-");
+
+return p[2]+"/"+p[1]+"/"+p[0];
+
+}
+
+
+function normalizeDate(value){
+
+if(!value){
+return "";
+}
+
+value = String(value).trim();
+
+
+// DD/MM/YYYY
+
+let match =
+value.match(
+/^(\d{1,2})\/(\d{1,2})\/(\d{4})/
+);
+
+if(match){
+
+return (
+match[3] +
+"-" +
+String(match[2]).padStart(2,"0") +
+"-" +
+String(match[1]).padStart(2,"0")
+);
+
+}
+
+
+// MM/DD/YYYY
+
+let usa =
+value.match(
+/^(\d{1,2})\/(\d{1,2})\/(\d{4})/
+);
+
+if(usa){
+
+return (
+usa[3] +
+"-" +
+String(usa[1]).padStart(2,"0") +
+"-" +
+String(usa[2]).padStart(2,"0")
+);
+
+}
+
+
+// YYYY-MM-DD
+
+if(
+/^\d{4}-\d{2}-\d{2}/
+.test(value)
+){
+
+return value.substring(0,10);
+
+}
+
+
+// Javascript Date
+
+let d = new Date(value);
+
+if(!isNaN(d.getTime())){
+
+let y = d.getFullYear();
+
+let m =
+String(d.getMonth()+1)
+.padStart(2,"0");
+
+let day =
+String(d.getDate())
+.padStart(2,"0");
+
+return y+"-"+m+"-"+day;
+
+}
+
+return "";
+
+}
+
+
+
+function openBookiCalendar(){
+
+let input =
+document.getElementById(
+"cuttingDate"
+);
+
+if(!input){
+return;
+}
+
+/*
+Chrome / Edge desktop me showPicker direct user click par
+calendar kholta hai. Fallback ke liye temporary pointer-events
+enable karke focus/click bhi kiya gaya hai.
+*/
+
+if(
+typeof input.showPicker === "function"
+){
+
+try{
+
+input.showPicker();
+
+return;
+
+}
+catch(error){
+
+console.warn(
+"Calendar showPicker fallback",
+error
+);
+
+}
+
+}
+
+try{
+
+input.style.pointerEvents = "auto";
+
+input.focus({
+preventScroll:true
+});
+
+input.click();
+
+setTimeout(function(){
+
+input.style.pointerEvents = "none";
+
+},50);
+
+}
+catch(error){
+
+input.style.pointerEvents = "none";
+
+console.error(
+"Calendar Open Error",
+error
+);
+
+}
+
+}
+
+
+// =====================================
+// SET TODAY DATE
+// =====================================
+
+function setInitialDate(){
+
+let today =
+getTodayISO();
+
+document.getElementById(
+"cuttingDate"
+).value = today;
+
+document.getElementById(
+"dateText"
+).innerHTML =
+isoToDisplay(today);
+
+}
+
+setInitialDate();
+
+
+// =====================================
+// DATE CHANGE
+// =====================================
+
+function dateChanged(){
+
+let value =
+document.getElementById(
+"cuttingDate"
+).value;
+
+if(!value){
+return;
+}
+
+document.getElementById(
+"dateText"
+).innerHTML =
+isoToDisplay(value);
+
+activeCutPercent = 0;
+
+hideCutInfo();
+
+/* Purani date select karne par market list wahi rahegi.
+   Market pe click karne par us date ki cutting khulegi. */
+
+let market =
+document.getElementById(
+"marketSelect"
+).value;
+
+if(market){
+
+loadMarketCutting();
+
+}
+
+}
+
+
+
+// =====================================
+// USER-APP STYLE MARKET CARD HELPERS
+// =====================================
+
+let bookiLiveResults = {};
+
+function normalizeMarketKey(value){
+
+return String(
+value || ""
+)
+.trim()
+.toUpperCase();
+
+}
+
+
+function timeToMinutes(value){
+
+let textValue =
+String(
+value || ""
+)
+.trim();
+
+if(!textValue){
+return null;
+}
+
+let parts =
+textValue.split(":");
+
+if(parts.length < 2){
+return null;
+}
+
+let h =
+Number(parts[0]);
+
+let m =
+Number(parts[1]);
+
+if(
+!Number.isFinite(h)
+||
+!Number.isFinite(m)
+){
+return null;
+}
+
+return (h * 60) + m;
+
+}
+
+
+function getBookiMarketStatus(item){
+
+let now =
+new Date();
+
+let current =
+(now.getHours() * 60)
++
+now.getMinutes();
+
+let openMinutes =
+timeToMinutes(
+item.openTime || item.open
+);
+
+let closeMinutes =
+timeToMinutes(
+item.closeTime || item.close
+);
+
+let live =
+bookiLiveResults[
+normalizeMarketKey(item.market)
+] || null;
+
+let result =
+live && live.result
+?
+String(live.result)
+:
+"***-**-***";
+
+let complete =
+(
+live
+&&
+String(live.status || "").toUpperCase() === "COMPLETE"
+)
+||
+(
+result.indexOf("***") === -1
+&&
+result.split("-").length >= 3
+);
+
+let openSaved =
+result !== "***-**-***"
+&&
+result.split("-")[0]
+&&
+result.split("-")[0] !== "***";
+
+if(
+closeMinutes !== null
+&&
+current >= closeMinutes
+){
+
+return {
+label:"CLOSED",
+className:"status-closed",
+icon:"×",
+result:result
+};
+
+}
+
+if(openSaved && !complete){
+
+return {
+label:"RUNNING CLOSE",
+className:"status-running-close",
+icon:"◷",
+result:result
+};
+
+}
+
+return {
+label:"RUNNING",
+className:"status-running",
+icon:"▶",
+result:result
+};
+
+}
+
+
+async function syncBookiLiveResults(){
+
+try{
+
+let response =
+await fetch(
+"http://127.0.0.1:5000/api/live/results",
+{
+cache:"no-store"
+}
+);
+
+if(!response.ok){
+return;
+}
+
+let data =
+await response.json();
+
+let records =
+Array.isArray(data)
+?
+data
+:
+(
+Array.isArray(data.records)
+?
+data.records
+:
+[]
+);
+
+let next = {};
+
+records.forEach(function(record){
+
+if(!record || !record.market){
+return;
+}
+
+next[
+normalizeMarketKey(record.market)
+] = record;
+
+});
+
+bookiLiveResults = next;
+
+loadMarkets();
+
+}
+catch(error){
+
+// Server unavailable ho to cutting system fir bhi chalega.
+
+}
+
+}
+
+
+function showMarketDetail(){
+
+let shell =
+document.getElementById(
+"marketListShell"
+);
+
+let controls =
+document.getElementById(
+"detailControls"
+);
+
+let back =
+document.getElementById(
+"detailBackWrap"
+);
+
+let area =
+document.getElementById(
+"cuttingArea"
+);
+
+if(shell){
+shell.style.display = "none";
+}
+
+if(controls){
+controls.style.display = "flex";
+}
+
+if(back){
+back.style.display = "block";
+}
+
+if(area){
+area.style.display = "block";
+}
+
+}
+
+
+function backToMarketCards(){
+
+let shell =
+document.getElementById(
+"marketListShell"
+);
+
+let controls =
+document.getElementById(
+"detailControls"
+);
+
+let back =
+document.getElementById(
+"detailBackWrap"
+);
+
+let area =
+document.getElementById(
+"cuttingArea"
+);
+
+if(shell){
+shell.style.display = "block";
+}
+
+if(controls){
+controls.style.display = "none";
+}
+
+if(back){
+back.style.display = "none";
+}
+
+if(area){
+area.style.display = "none";
+}
+
+activeCutPercent = 0;
+
+hideCutInfo();
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+
+// =====================================
+// LOAD MARKETS
+// =====================================
+
+function loadMarkets(){
+
+let markets =
+JSON.parse(
+localStorage.getItem("markets")
+) || [];
+
+let select =
+document.getElementById(
+"marketSelect"
+);
+
+let cards =
+document.getElementById(
+"marketCards"
+);
+
+select.innerHTML =
+`<option value="">Select Market</option>`;
+
+cards.innerHTML = "";
+
+markets.forEach(function(item){
+
+if(!item.market){
+return;
+}
+
+select.innerHTML +=
+`
+<option value="${item.market}">
+${item.market}
+</option>
+`;
+
+let openTime =
+String(
+item.openTime ||
+item.open ||
+"--:--"
+);
+
+let closeTime =
+String(
+item.closeTime ||
+item.close ||
+"--:--"
+);
+
+let safeMarket =
+encodeURIComponent(
+item.market
+);
+
+let cardState =
+getBookiMarketStatus(
+item
+);
+
+cards.innerHTML +=
+`
+<div
+class="market-card"
+data-market="${item.market}"
+onclick="selectMarketCard('${safeMarket}')">
+
+<div class="market-card-left">
+
+<div class="market-card-name">
+${item.market}
+</div>
+
+<div class="market-card-result">
+${cardState.result}
+</div>
+
+<div class="market-card-time">
+${openTime} - ${closeTime}
+</div>
+
+</div>
+
+<div class="market-card-right">
+
+<div class="market-status-circle ${cardState.className}">
+${cardState.icon}
+</div>
+
+<div class="market-status-text">
+${cardState.label}
+</div>
+
+</div>
+
+<div class="market-card-arrow">›</div>
+
+</div>
+`;
+
+});
+
+}
+
+
+function selectMarketCard(encodedMarket){
+
+let market =
+decodeURIComponent(
+encodedMarket
+);
+
+let select =
+document.getElementById(
+"marketSelect"
+);
+
+select.value = market;
+
+document
+.querySelectorAll(
+".market-card"
+)
+.forEach(function(card){
+
+card.classList.toggle(
+"active",
+card.getAttribute("data-market") === market
+);
+
+});
+
+activeCutPercent = 0;
+
+hideCutInfo();
+
+/* Market card click -> detail screen open */
+showMarketDetail();
+
+let marketValue =
+document.getElementById(
+"marketSelect"
+).value;
+
+if(marketValue){
+loadMarketCutting();
+}
+
+let area =
+document.getElementById(
+"cuttingArea"
+);
+
+if(area){
+
+area.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+
+}
+
+}
+
+
+loadMarkets();
+
+
+// =====================================
+// GET SELECTED DATE BETS
+// =====================================
+
+function getSelectedBets(){
+
+let market =
+document.getElementById(
+"marketSelect"
+).value;
+
+let selectedDate =
+document.getElementById(
+"cuttingDate"
+).value;
+
+let bets =
+JSON.parse(
+localStorage.getItem("bets")
+) || [];
+
+return bets.filter(function(bet){
+
+let sameMarket =
+String(bet.market || "").trim()
+==
+String(market).trim();
+
+let betDate =
+normalizeDate(bet.date);
+
+let sameDate =
+betDate == selectedDate;
+
+return sameMarket && sameDate;
+
+});
+
+}
+
+
+// =====================================
+// DETECT SESSION
+// =====================================
+
+function getBetSession(bet){
+
+let session =
+String(
+bet.session || ""
+).toLowerCase();
+
+let game =
+String(
+bet.game ||
+bet.gameType ||
+""
+).toLowerCase();
+
+if(
+session=="open" ||
+game.includes("open")
+){
+
+return "Open";
+
+}
+
+if(
+session=="close" ||
+game.includes("close")
+){
+
+return "Close";
+
+}
+
+return "";
+
+}
+
+
+// =====================================
+// CLEAN GAME NAME
+// =====================================
+
+function cleanGameName(bet){
+
+let game =
+String(
+bet.game ||
+bet.gameType ||
+"Other"
+);
+
+game =
+game.replace(
+/\s+Open$/i,
+""
+);
+
+game =
+game.replace(
+/\s+Close$/i,
+""
+);
+
+return game.trim();
+
+}
+
+
+// =====================================
+// GROUP DATA
+// =====================================
+
+function groupBets(bets){
+
+let groups = {};
+
+bets.forEach(function(bet){
+
+let game =
+cleanGameName(bet);
+
+let number =
+String(
+bet.number ?? "-"
+);
+
+let amount =
+Number(
+bet.amount || 0
+);
+
+if(!groups[game]){
+
+groups[game] = {};
+
+}
+
+if(!groups[game][number]){
+
+groups[game][number] = 0;
+
+}
+
+groups[game][number] += amount;
+
+});
+
+return groups;
+
+}
+
+
+// =====================================
+// CUT AMOUNT
+// Example 30% cutting:
+// ₹10 -> ₹7
+// =====================================
+
+function getFinalAmount(amount){
+
+amount =
+Number(amount || 0);
+
+if(activeCutPercent<=0){
+
+return amount;
+
+}
+
+let remainingPercent =
+100 - activeCutPercent;
+
+return (
+amount *
+remainingPercent /
+100
+);
+
+}
+
+
+// =====================================
+// NUMBER FORMAT
+// =====================================
+
+function formatAmount(amount){
+
+let num =
+Number(amount || 0);
+
+if(
+Number.isInteger(num)
+){
+
+return num;
+
+}
+
+return Number(
+num.toFixed(2)
+);
+
+}
+
+
+// =====================================
+// LOAD CUTTING
+// =====================================
+
+function loadMarketCutting(){
+
+let market =
+document.getElementById(
+"marketSelect"
+).value;
+
+let area =
+document.getElementById(
+"cuttingArea"
+);
+
+if(market==""){
+
+area.innerHTML="";
+
+return;
+
+}
+
+let bets =
+getSelectedBets();
+
+let openBets =
+bets.filter(function(bet){
+
+return getBetSession(bet)=="Open";
+
+});
+
+let closeBets =
+bets.filter(function(bet){
+
+return getBetSession(bet)=="Close";
+
+});
+
+area.innerHTML =
+createSession(
+market,
+"Open",
+openBets
+)
++
+createSession(
+market,
+"Close",
+closeBets
+);
+
+}
+
+
+// =====================================
+// CREATE SESSION
+// =====================================
+
+function createSession(
+market,
+session,
+bets
+){
+
+let grouped =
+groupBets(bets);
+
+let text = "";
+
+let total = 0;
+
+Object.keys(grouped)
+.forEach(function(game){
+
+text +=
+`================
+*${game}*
+================
+`;
+
+Object.keys(
+grouped[game]
+).forEach(function(number){
+
+let original =
+grouped[game][number];
+
+let finalAmount =
+getFinalAmount(original);
+
+total += finalAmount;
+
+text +=
+`${number} = ₹ ${formatAmount(finalAmount)}
+`;
+
+});
+
+text += "\n";
+
+});
+
+
+if(
+Object.keys(grouped).length==0
+){
+
+text =
+`================
+No Bidding Found
+================
+
+`;
+
+}
+
+
+text +=
+`================
+*Total : ₹ ${formatAmount(total)}*
+================`;
+
+let safeId =
+(
+market +
+session
+)
+.replace(
+/[^a-zA-Z0-9]/g,
+""
+);
+
+return `
+
+<div class="market-box">
+
+<div class="market-title">
+Market : ${market}
+</div>
+
+<div class="session-title">
+Session : ${session}
+</div>
+
+<button
+class="copy-btn"
+onclick="copyMarketData('${safeId}')">
+
+Copy "${session}" Market Cutting
+
+</button>
+
+<div
+class="data-text"
+id="${safeId}">
+
+*Market : ${market} - ${session.toUpperCase()}*
+
+${text}
+
+</div>
+
+<div class="total-box">
+Total: ₹ ${formatAmount(total)}
+</div>
+
+</div>
+
+`;
+
+}
+
+
+// =====================================
+// MAIN DATA
+// =====================================
+
+function showMainData(){
+
+let market =
+document.getElementById(
+"marketSelect"
+).value;
+
+if(market==""){
+
+alert(
+"Please Select Market"
+);
+
+return;
+
+}
+
+activeCutPercent = 0;
+
+hideCutInfo();
+
+loadMarketCutting();
+
+}
+
+
+// =====================================
+// CUTTING POPUP
+// =====================================
+
+function openCuttingPopup(){
+
+let market =
+document.getElementById(
+"marketSelect"
+).value;
+
+if(market==""){
+
+alert(
+"Please Select Market First"
+);
+
+return;
+
+}
+
+document.getElementById(
+"cuttingPopup"
+).style.display =
+"flex";
+
+document.getElementById(
+"cutPercent"
+).focus();
+
+}
+
+
+function closeCuttingPopup(){
+
+document.getElementById(
+"cuttingPopup"
+).style.display =
+"none";
+
+}
+
+
+// =====================================
+// APPLY CUTTING
+// =====================================
+
+function applyCutting(){
+
+let percent =
+Number(
+document.getElementById(
+"cutPercent"
+).value
+);
+
+if(
+isNaN(percent) ||
+percent < 0 ||
+percent > 100
+){
+
+alert(
+"Please Enter Cutting Percent Between 0 And 100"
+);
+
+return;
+
+}
+
+activeCutPercent = percent;
+
+document.getElementById(
+"cutInfo"
+).style.display =
+"block";
+
+document.getElementById(
+"cutInfo"
+).innerHTML =
+percent +
+"% Cutting Applied — Showing Remaining " +
+(100-percent) +
+"% Amount";
+
+closeCuttingPopup();
+
+loadMarketCutting();
+
+document.getElementById(
+"cutPercent"
+).value="";
+
+}
+
+
+// =====================================
+// HIDE CUT INFO
+// =====================================
+
+function hideCutInfo(){
+
+document.getElementById(
+"cutInfo"
+).style.display =
+"none";
+
+}
+
+
+// =====================================
+// COPY
+// =====================================
+
+function copyMarketData(id){
+
+let el =
+document.getElementById(id);
+
+if(!el){
+
+return;
+
+}
+
+let text =
+el.innerText;
+
+if(
+navigator.clipboard
+){
+
+navigator.clipboard
+.writeText(text)
+.then(function(){
+
+alert(
+"Market Cutting Copied Successfully"
+);
+
+})
+.catch(function(){
+
+fallbackCopy(text);
+
+});
+
+}else{
+
+fallbackCopy(text);
+
+}
+
+}
+
+
+function fallbackCopy(text){
+
+let area =
+document.createElement(
+"textarea"
+);
+
+area.value = text;
+
+document.body.appendChild(
+area
+);
+
+area.select();
+
+document.execCommand(
+"copy"
+);
+
+area.remove();
+
+alert(
+"Market Cutting Copied Successfully"
+);
+
+}
+
+
+// =====================================
+// AUTO SELECT FIRST MARKET
+// =====================================
+
+let marketSelect =
+document.getElementById(
+"marketSelect"
+);
+
+if(
+marketSelect.options.length > 1
+){
+
+marketSelect.selectedIndex = 1;
+
+let firstMarket =
+marketSelect.value;
+
+document
+.querySelectorAll(
+".market-card"
+)
+.forEach(function(card){
+
+card.classList.toggle(
+"active",
+card.getAttribute("data-market") === firstMarket
+);
+
+});
+
+loadMarketCutting();
+
+}
+
+
+console.log(
+"Booki Cutting FINAL FIXED V2 - Full Date Bar Calendar Working + Market Click + Original Cutting Logic"
+);
+
+</script>
+
+</body>
+</html>

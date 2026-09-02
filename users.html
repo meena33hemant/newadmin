@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+Users Management
+</title>
+
+
+<style>
+
+/* =========================================================
+   HR MATKA - USERS MANAGEMENT
+   COMPLETE ADMIN PROTECTED REPLACEMENT
+========================================================= */
+
+
+/* =========================================================
+   1. BASIC RESET
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+
+/* =========================================================
+   2. PAGE
+========================================================= */
+
+body{
+    background:#f2f2f2;
+}
+
+
+/* =========================================================
+   3. MAIN CONTAINER
+========================================================= */
+
+.container{
+    max-width:800px;
+    margin:auto;
+    padding:20px;
+}
+
+
+/* =========================================================
+   4. PAGE TITLE
+========================================================= */
+
+h1{
+    text-align:center;
+    margin-bottom:20px;
+    color:#333;
+}
+
+
+/* =========================================================
+   5. CARD
+========================================================= */
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+
+/* =========================================================
+   6. SEARCH AREA
+========================================================= */
+
+label{
+    display:block;
+    margin-bottom:7px;
+    font-weight:bold;
+    color:#333;
+}
+
+#searchInput{
+    width:100%;
+    padding:11px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    margin-bottom:10px;
+    outline:none;
+}
+
+#searchInput:focus{
+    border-color:#3498db;
+    box-shadow:0 0 0 2px rgba(52,152,219,.10);
+}
+
+button{
+    border:none;
+    border-radius:7px;
+    padding:9px 13px;
+    margin-right:6px;
+    cursor:pointer;
+    font-weight:bold;
+    background:#3498db;
+    color:#fff;
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+
+/* =========================================================
+   7. TABLE
+========================================================= */
+
+.tableWrap{
+    width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+    min-width:760px;
+}
+
+th,
+td{
+    border:1px solid #ddd;
+    padding:12px;
+    text-align:center;
+}
+
+th{
+    background:#3498db;
+    color:white;
+}
+
+tr:nth-child(even){
+    background:#f9f9f9;
+}
+
+
+/* =========================================================
+   8. STATUS
+========================================================= */
+
+.activeStatus{
+    color:green;
+    font-weight:bold;
+}
+
+
+/* =========================================================
+   9. BACK BUTTON
+========================================================= */
+
+.back{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#555;
+}
+
+
+/* =========================================================
+   10. MOBILE
+========================================================= */
+
+@media(max-width:700px){
+
+    .container{
+        padding:10px;
+    }
+
+    .card{
+        padding:12px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     ADMIN LOGIN PROTECTION
+
+     Same exact sessionStorage system as:
+     adminlogin.html
+     index.html
+     result.html
+     marketsetting.html
+     bookicutting.html
+
+     Valid session  = Users page opens normally.
+     Missing/expired session = adminlogin.html.
+========================================================= -->
+
+<script>
+
+(function(){
+
+    "use strict";
+
+    const SESSION_KEY =
+    "hrAdminSession";
+
+    const LOGIN_PAGE =
+    "adminlogin.html";
+
+
+    try{
+
+        const raw =
+        sessionStorage.getItem(
+            SESSION_KEY
+        );
+
+
+        const session =
+        raw
+        ?
+        JSON.parse(raw)
+        :
+        null;
+
+
+        const now =
+        Date.now();
+
+
+        if(
+            !session
+            ||
+            session.loggedIn !== true
+            ||
+            !session.expiresAt
+            ||
+            now >= Number(session.expiresAt)
+        ){
+
+            sessionStorage.removeItem(
+                SESSION_KEY
+            );
+
+
+            window.location.replace(
+                LOGIN_PAGE
+            );
+
+
+            return;
+
+        }
+
+
+        console.log(
+            "✅ Users Management Admin Login Protection Connected"
+        );
+
+    }
+    catch(error){
+
+        sessionStorage.removeItem(
+            SESSION_KEY
+        );
+
+
+        window.location.replace(
+            LOGIN_PAGE
+        );
+
+    }
+
+})();
+
+</script>
+
+
+<!-- =========================================================
+     MAIN PAGE
+========================================================= -->
+
+<div class="container">
+
+
+    <h1>
+        Users Management
+    </h1>
+
+
+    <h2
+        style="text-align:center;color:#e74c3c;"
+    >
+        Total Users :
+        <span id="totalUsers">0</span>
+    </h2>
+
+
+    <div class="card">
+
+
+        <!-- =================================================
+             SEARCH USER
+        ================================================== -->
+
+        <label>
+            Search User
+        </label>
+
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Enter Mobile Number or User Name"
+        >
+
+
+        <button
+            type="button"
+            onclick="searchUser()"
+        >
+            Search
+        </button>
+
+
+        <button
+            type="button"
+            onclick="clearSearch()"
+        >
+            Clear
+        </button>
+
+
+        <!-- =================================================
+             USERS TABLE
+        ================================================== -->
+
+        <div class="tableWrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>User Name</th>
+
+                        <th>Mobile Number</th>
+
+                        <th>City</th>
+
+                        <th>Balance</th>
+
+                        <th>Status</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="userTable"></tbody>
+
+            </table>
+
+        </div>
+
+
+        <a
+            href="index.html"
+            class="back"
+        >
+            ← Back To Admin Panel
+        </a>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   1. SAFE STORAGE
+========================================================= */
+
+function getStorage(
+    key,
+    fallback
+){
+
+    try{
+
+        const raw =
+        localStorage.getItem(
+            key
+        );
+
+
+        if(
+            raw === null
+            ||
+            raw === ""
+        ){
+
+            return fallback;
+
+        }
+
+
+        return JSON.parse(
+            raw
+        );
+
+    }
+    catch(error){
+
+        console.warn(
+            "Storage Read Error:",
+            key,
+            error
+        );
+
+
+        return fallback;
+
+    }
+
+}
+
+
+/* =========================================================
+   2. SAFE TEXT
+========================================================= */
+
+function text(value){
+
+    return String(
+        value ?? ""
+    );
+
+}
+
+
+/* =========================================================
+   3. LOAD ALL USERS
+========================================================= */
+
+function loadUsers(){
+
+    let users =
+    getStorage(
+        "users",
+        []
+    );
+
+
+    let balances =
+    getStorage(
+        "userBalances",
+        {}
+    );
+
+
+    if(
+        !Array.isArray(
+            users
+        )
+    ){
+
+        users = [];
+
+    }
+
+
+    if(
+        !balances
+        ||
+        Array.isArray(
+            balances
+        )
+        ||
+        typeof balances !==
+        "object"
+    ){
+
+        balances = {};
+
+    }
+
+
+    document
+    .getElementById(
+        "totalUsers"
+    )
+    .innerHTML =
+    users.length;
+
+
+    renderUsers(
+        users,
+        balances
+    );
+
+}
+
+
+/* =========================================================
+   4. RENDER USERS TABLE
+========================================================= */
+
+function renderUsers(
+    users,
+    balances
+){
+
+    const table =
+    document
+    .getElementById(
+        "userTable"
+    );
+
+
+    table.innerHTML =
+    "";
+
+
+    if(
+        !Array.isArray(
+            users
+        )
+        ||
+        users.length === 0
+    ){
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td colspan="7">
+                    No User Found
+                </td>
+
+            </tr>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    users.forEach(
+        function(
+            user,
+            index
+        ){
+
+            const mobile =
+            text(
+                user.mobile
+            );
+
+
+            const balance =
+            Number(
+                balances[
+                    mobile
+                ]
+                ||
+                0
+            );
+
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td>
+                        ${text(user.name)}
+                    </td>
+
+                    <td>
+                        ${mobile}
+                    </td>
+
+                    <td>
+                        ${text(user.city)}
+                    </td>
+
+                    <td>
+                        ₹ ${Number.isFinite(balance) ? balance : 0}
+                    </td>
+
+                    <td>
+
+                        <span class="activeStatus">
+                            Active
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <button
+                            type="button"
+                            onclick="openUser('${mobile}')"
+                        >
+                            Open
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   5. SEARCH USER
+
+   Search works by:
+   - User Name
+   - Mobile Number
+========================================================= */
+
+function searchUser(){
+
+    const search =
+    document
+    .getElementById(
+        "searchInput"
+    )
+    .value
+    .trim()
+    .toLowerCase();
+
+
+    let users =
+    getStorage(
+        "users",
+        []
+    );
+
+
+    let balances =
+    getStorage(
+        "userBalances",
+        {}
+    );
+
+
+    if(
+        !Array.isArray(
+            users
+        )
+    ){
+
+        users = [];
+
+    }
+
+
+    if(
+        !balances
+        ||
+        Array.isArray(
+            balances
+        )
+        ||
+        typeof balances !==
+        "object"
+    ){
+
+        balances = {};
+
+    }
+
+
+    const filtered =
+    users.filter(
+        function(user){
+
+            const name =
+            text(
+                user.name
+            )
+            .toLowerCase();
+
+
+            const mobile =
+            text(
+                user.mobile
+            )
+            .toLowerCase();
+
+
+            return (
+                name.includes(
+                    search
+                )
+                ||
+                mobile.includes(
+                    search
+                )
+            );
+
+        }
+    );
+
+
+    renderUsers(
+        filtered,
+        balances
+    );
+
+}
+
+
+/* =========================================================
+   6. OPEN USER DETAILS
+========================================================= */
+
+function openUser(mobile){
+
+    let users =
+    getStorage(
+        "users",
+        []
+    );
+
+
+    if(
+        !Array.isArray(
+            users
+        )
+    ){
+
+        users = [];
+
+    }
+
+
+    const user =
+    users.find(
+        function(item){
+
+            return (
+                text(
+                    item.mobile
+                )
+                ===
+                text(
+                    mobile
+                )
+            );
+
+        }
+    );
+
+
+    if(!user){
+
+        alert(
+            "User Not Found"
+        );
+
+        return;
+
+    }
+
+
+    localStorage.setItem(
+
+        "selectedUser",
+
+        JSON.stringify(
+            user
+        )
+
+    );
+
+
+    window.location.href =
+    "userdetails.html";
+
+}
+
+
+/* =========================================================
+   7. CLEAR SEARCH
+========================================================= */
+
+function clearSearch(){
+
+    document
+    .getElementById(
+        "searchInput"
+    )
+    .value =
+    "";
+
+
+    loadUsers();
+
+}
+
+
+/* =========================================================
+   8. LIVE UPDATE FROM OTHER TAB
+========================================================= */
+
+window.addEventListener(
+
+    "storage",
+
+    function(event){
+
+        if(
+            event.key ===
+            "users"
+            ||
+            event.key ===
+            "userBalances"
+        ){
+
+            loadUsers();
+
+        }
+
+    }
+
+);
+
+
+/* =========================================================
+   9. FIRST LOAD
+========================================================= */
+
+loadUsers();
+
+
+/* =========================================================
+   10. CONSOLE READY
+========================================================= */
+
+console.log(
+    "✅ HR MATKA Users Management Connected"
+);
+
+console.log(
+    "✅ Users Search + Balance + Open User Connected"
+);
+
+</script>
+
+
+</body>
+
+</html>

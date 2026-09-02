@@ -1,0 +1,3044 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+Market Setting - HR MATKA
+</title>
+
+
+<style>
+
+/* =========================================================
+   HR MATKA - MARKET SETTING
+   CLEAN COMPLETE REPLACEMENT
+
+   CSS को साफ sections में रखा गया है ताकि आगे किसी भी
+   design problem को आसानी से ढूंढ और ठीक किया जा सके।
+========================================================= */
+
+
+/* =========================================================
+   1. BASIC RESET
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+
+/* =========================================================
+   2. PAGE
+========================================================= */
+
+body{
+    background:#f2f2f2;
+    color:#222;
+    min-height:100vh;
+}
+
+.container{
+    max-width:1150px;
+    margin:auto;
+    padding:18px;
+}
+
+
+/* =========================================================
+   3. PAGE TITLE
+========================================================= */
+
+h1{
+    text-align:center;
+    margin-bottom:10px;
+    color:#333;
+}
+
+.totalTitle{
+    text-align:center;
+    color:#8e44ad;
+    margin-bottom:18px;
+}
+
+
+/* =========================================================
+   4. MAIN CARD
+========================================================= */
+
+.card{
+    background:#fff;
+    padding:18px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,.14);
+}
+
+
+/* =========================================================
+   5. INFORMATION NOTICE
+========================================================= */
+
+.notice{
+    background:#fff8e1;
+    border-left:5px solid #f4b400;
+    padding:12px 14px;
+    border-radius:8px;
+    line-height:1.55;
+    font-size:13px;
+    margin-bottom:16px;
+}
+
+
+/* =========================================================
+   6. ADD / EDIT MARKET FORM
+========================================================= */
+
+.formGrid{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr auto;
+    gap:10px;
+    align-items:end;
+}
+
+label{
+    display:block;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    outline:none;
+}
+
+input:focus{
+    border-color:#8e44ad;
+    box-shadow:0 0 0 2px rgba(142,68,173,.10);
+}
+
+
+/* =========================================================
+   7. COMMON BUTTON
+========================================================= */
+
+button{
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    color:#fff;
+    font-weight:700;
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+.saveBtn{
+    padding:11px 16px;
+    background:#8e44ad;
+}
+
+
+/* =========================================================
+   8. MARKET TABLE
+========================================================= */
+
+.tableWrap{
+    width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
+table{
+    width:100%;
+    margin-top:18px;
+    border-collapse:collapse;
+}
+
+th{
+    background:#8e44ad;
+    color:#fff;
+    padding:11px 8px;
+    border:1px solid #ddd;
+    white-space:nowrap;
+}
+
+td{
+    padding:9px 7px;
+    text-align:center;
+    border:1px solid #ddd;
+    white-space:nowrap;
+}
+
+tr:nth-child(even){
+    background:#fafafa;
+}
+
+
+/* =========================================================
+   9. MARKET STATUS COLORS
+========================================================= */
+
+.statusRunning{
+    color:#168643;
+    font-weight:800;
+}
+
+.statusRunningClose{
+    color:#e67e22;
+    font-weight:800;
+}
+
+.statusClosed{
+    color:#c62828;
+    font-weight:800;
+}
+
+.statusHoliday{
+    color:#777;
+    font-weight:800;
+}
+
+
+/* =========================================================
+   10. TABLE ACTION BUTTONS
+========================================================= */
+
+.actionBtn{
+    padding:7px 9px;
+    margin:2px;
+    font-size:12px;
+}
+
+.weeklyBtn{
+    background:#8e44ad;
+}
+
+.editBtn{
+    background:#3498db;
+}
+
+.deleteBtn{
+    background:#7f8c8d;
+}
+
+
+/* =========================================================
+   11. BACK BUTTON
+========================================================= */
+
+.back{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    text-decoration:none;
+    font-weight:bold;
+    color:#555;
+}
+
+
+/* =========================================================
+   12. POPUP + WEEKLY HOLIDAY MODAL
+========================================================= */
+
+.popup,
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    padding:16px;
+}
+
+.popupBox,
+.modalBox{
+    width:100%;
+    max-width:430px;
+    background:#fff;
+    border-radius:14px;
+    padding:20px;
+    box-shadow:0 12px 35px rgba(0,0,0,.25);
+}
+
+.popupBox{
+    text-align:center;
+}
+
+.popupClose,
+.modalClose{
+    width:100%;
+    padding:10px;
+    margin-top:14px;
+    background:#34495e;
+}
+
+
+/* =========================================================
+   13. WEEKLY HOLIDAY
+========================================================= */
+
+.weekTitle{
+    text-align:center;
+    margin-bottom:12px;
+    color:#8e44ad;
+}
+
+.weekRow{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:10px 0;
+    border-bottom:1px solid #eee;
+}
+
+.weekDay{
+    font-weight:800;
+}
+
+.weekNote{
+    font-size:12px;
+    color:#666;
+    line-height:1.45;
+    margin-top:10px;
+}
+
+.weekSave{
+    width:100%;
+    padding:11px;
+    margin-top:14px;
+    background:#8e44ad;
+}
+
+
+/* =========================================================
+   14. WEEKLY HOLIDAY SWITCH
+========================================================= */
+
+.switch{
+    position:relative;
+    width:54px;
+    height:30px;
+    flex:0 0 auto;
+}
+
+.switch input{
+    display:none;
+}
+
+.slider{
+    position:absolute;
+    inset:0;
+    background:#aaa;
+    border-radius:30px;
+    transition:.2s;
+}
+
+.slider:before{
+    content:"";
+    position:absolute;
+    width:24px;
+    height:24px;
+    left:3px;
+    top:3px;
+    background:#fff;
+    border-radius:50%;
+    transition:.2s;
+}
+
+.switch input:checked + .slider{
+    background:#27ae60;
+}
+
+.switch input:checked + .slider:before{
+    transform:translateX(24px);
+}
+
+
+/* =========================================================
+   15. MOBILE RESPONSIVE
+========================================================= */
+
+@media(max-width:800px){
+
+    .container{
+        padding:10px;
+    }
+
+    .card{
+        padding:12px;
+    }
+
+    .formGrid{
+        grid-template-columns:1fr;
+    }
+
+    .saveBtn{
+        width:100%;
+    }
+
+    table{
+        min-width:760px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     ADMIN LOGIN PROTECTION
+
+     Same session system as:
+     adminlogin.html + admin index.html
+
+     Session missing / expired = adminlogin.html
+========================================================= -->
+
+<script>
+
+(function(){
+
+    "use strict";
+
+    const SESSION_KEY =
+    "hrAdminSession";
+
+    const LOGIN_PAGE =
+    "adminlogin.html";
+
+    try{
+
+        const raw =
+        sessionStorage.getItem(
+            SESSION_KEY
+        );
+
+        const session =
+        raw
+        ?
+        JSON.parse(raw)
+        :
+        null;
+
+        const now =
+        Date.now();
+
+        if(
+            !session
+            ||
+            session.loggedIn !== true
+            ||
+            !session.expiresAt
+            ||
+            now >= Number(session.expiresAt)
+        ){
+
+            sessionStorage.removeItem(
+                SESSION_KEY
+            );
+
+            window.location.replace(
+                LOGIN_PAGE
+            );
+
+            return;
+
+        }
+
+    }
+    catch(error){
+
+        sessionStorage.removeItem(
+            SESSION_KEY
+        );
+
+        window.location.replace(
+            LOGIN_PAGE
+        );
+
+    }
+
+})();
+
+</script>
+
+
+<!-- =========================================================
+     MAIN PAGE
+========================================================= -->
+
+<div class="container">
+
+    <h1>
+        Market Management
+    </h1>
+
+    <h2 class="totalTitle">
+        Total Market :
+        <span id="totalMarket">0</span>
+    </h2>
+
+
+    <div class="card">
+
+
+        <!-- =================================================
+             INFORMATION
+        ================================================== -->
+
+        <div class="notice">
+
+            <b>Final Structure:</b>
+
+            Market status automatic rahega.
+            Close time khatam hote hi market CLOSED ho jayega,
+            chahe close result thodi der baad aaye.
+
+            Holiday sirf Weekly Holiday ON/OFF se control hoga.
+
+        </div>
+
+
+        <!-- =================================================
+             ADD / EDIT MARKET
+        ================================================== -->
+
+        <div class="formGrid">
+
+            <div>
+
+                <label>
+                    Market Name
+                </label>
+
+                <input
+                    type="text"
+                    id="market"
+                    placeholder="Enter Market Name"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Open Time
+                </label>
+
+                <input
+                    type="time"
+                    id="openTime"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Close Time
+                </label>
+
+                <input
+                    type="time"
+                    id="closeTime"
+                >
+
+            </div>
+
+
+            <div>
+
+                <button
+                    class="saveBtn"
+                    type="button"
+                    onclick="saveMarket()"
+                >
+                    💾 Save Market
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MARKET LIST
+        ================================================== -->
+
+        <div class="tableWrap">
+
+            <table id="marketTable">
+
+                <tr>
+                    <th>ID</th>
+                    <th>Market</th>
+                    <th>Open</th>
+                    <th>Close</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+
+            </table>
+
+        </div>
+
+
+        <a
+            href="index.html"
+            class="back"
+        >
+            ← Back To Admin Panel
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     NOTIFICATION POPUP
+========================================================= -->
+
+<div
+    class="popup"
+    id="popup"
+>
+
+    <div class="popupBox">
+
+        <h2>
+            Notification
+        </h2>
+
+        <p id="popupMessage">
+            Saved Successfully
+        </p>
+
+        <button
+            class="popupClose"
+            onclick="closePopup()"
+        >
+            Close
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     WEEKLY HOLIDAY MODAL
+========================================================= -->
+
+<div
+    class="modal"
+    id="weeklyModal"
+>
+
+    <div class="modalBox">
+
+        <h2 class="weekTitle">
+            Weekly Holiday
+        </h2>
+
+        <div
+            id="weeklyMarketName"
+            style="text-align:center;font-weight:800;margin-bottom:12px;"
+        >
+        </div>
+
+        <div id="weekRows"></div>
+
+        <div class="weekNote">
+            ON = market us din normal chalega.
+            <br>
+            OFF = market us din HOLIDAY rahega.
+        </div>
+
+        <button
+            class="weekSave"
+            onclick="saveWeeklyHoliday()"
+        >
+            Save Weekly Holiday
+        </button>
+
+        <button
+            class="modalClose"
+            onclick="closeWeeklyModal()"
+        >
+            Cancel
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   1. SERVER
+========================================================= */
+
+const SERVER_BASE =
+"http://127.0.0.1:5000";
+
+
+/* =========================================================
+   2. DEFAULT 14 MARKETS
+========================================================= */
+
+const DEFAULT_MARKETS = [
+
+    {
+        id:1,
+        market:"SRIDEVI",
+        openTime:"11:30",
+        closeTime:"12:30"
+    },
+
+    {
+        id:2,
+        market:"TIME BAZAR",
+        openTime:"12:50",
+        closeTime:"13:50"
+    },
+
+    {
+        id:3,
+        market:"MADHUR DAY",
+        openTime:"13:25",
+        closeTime:"14:25"
+    },
+
+    {
+        id:4,
+        market:"MILAN DAY",
+        openTime:"14:50",
+        closeTime:"16:50"
+    },
+
+    {
+        id:5,
+        market:"RAJDHANI DAY",
+        openTime:"15:05",
+        closeTime:"17:05"
+    },
+
+    {
+        id:6,
+        market:"SUPREME DAY",
+        openTime:"15:30",
+        closeTime:"17:30"
+    },
+
+    {
+        id:7,
+        market:"KALYAN",
+        openTime:"15:40",
+        closeTime:"17:40"
+    },
+
+    {
+        id:8,
+        market:"SRIDEVI NIGHT",
+        openTime:"19:10",
+        closeTime:"20:10"
+    },
+
+    {
+        id:9,
+        market:"MADHUR NIGHT",
+        openTime:"20:25",
+        closeTime:"22:25"
+    },
+
+    {
+        id:10,
+        market:"SUPREME NIGHT",
+        openTime:"20:40",
+        closeTime:"22:40"
+    },
+
+    {
+        id:11,
+        market:"MILAN NIGHT",
+        openTime:"20:55",
+        closeTime:"22:55"
+    },
+
+    {
+        id:12,
+        market:"KALYAN NIGHT",
+        openTime:"21:30",
+        closeTime:"23:30"
+    },
+
+    {
+        id:13,
+        market:"RAJDHANI NIGHT",
+        openTime:"21:30",
+        closeTime:"23:45"
+    },
+
+    {
+        id:14,
+        market:"MAIN BAZAR",
+        openTime:"21:45",
+        closeTime:"23:55"
+    }
+
+];
+
+
+/* =========================================================
+   3. WEEK DAYS
+========================================================= */
+
+const WEEK_DAYS = [
+
+    {
+        key:"sunday",
+        label:"Sunday"
+    },
+
+    {
+        key:"monday",
+        label:"Monday"
+    },
+
+    {
+        key:"tuesday",
+        label:"Tuesday"
+    },
+
+    {
+        key:"wednesday",
+        label:"Wednesday"
+    },
+
+    {
+        key:"thursday",
+        label:"Thursday"
+    },
+
+    {
+        key:"friday",
+        label:"Friday"
+    },
+
+    {
+        key:"saturday",
+        label:"Saturday"
+    }
+
+];
+
+
+const JS_DAY_TO_KEY = [
+
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday"
+
+];
+
+
+/* =========================================================
+   4. EDITING STATE
+========================================================= */
+
+let editingId =
+null;
+
+let weeklyEditingId =
+null;
+
+
+/* =========================================================
+   5. BASIC HELPERS
+========================================================= */
+
+function text(value){
+
+    return String(
+        value ?? ""
+    )
+    .trim();
+
+}
+
+
+function upper(value){
+
+    return text(
+        value
+    )
+    .toUpperCase();
+
+}
+
+
+function formatMarketName(value){
+
+    return text(value)
+    .toLowerCase()
+    .replace(
+        /\b\w/g,
+        function(letter){
+
+            return letter.toUpperCase();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   6. LOCAL STORAGE HELPERS
+========================================================= */
+
+function getStorage(
+    key,
+    fallback
+){
+
+    try{
+
+        const raw =
+        localStorage.getItem(
+            key
+        );
+
+        if(!raw){
+
+            return fallback;
+
+        }
+
+        return JSON.parse(
+            raw
+        );
+
+    }
+    catch(error){
+
+        console.warn(
+            "Storage Read Error:",
+            key,
+            error
+        );
+
+        return fallback;
+
+    }
+
+}
+
+
+function saveStorage(
+    key,
+    value
+){
+
+    localStorage.setItem(
+        key,
+        JSON.stringify(value)
+    );
+
+}
+
+
+/* =========================================================
+   7. POPUP
+========================================================= */
+
+function showPopup(message){
+
+    document
+    .getElementById(
+        "popupMessage"
+    )
+    .innerText =
+    message;
+
+
+    document
+    .getElementById(
+        "popup"
+    )
+    .style.display =
+    "flex";
+
+}
+
+
+function closePopup(){
+
+    document
+    .getElementById(
+        "popup"
+    )
+    .style.display =
+    "none";
+
+}
+
+
+/* =========================================================
+   8. TIME HELPER
+========================================================= */
+
+function timeToMinutes(value){
+
+    const raw =
+    text(value);
+
+    if(
+        !raw.includes(":")
+    ){
+
+        return null;
+
+    }
+
+
+    const parts =
+    raw.split(":");
+
+
+    const hour =
+    Number(parts[0]);
+
+
+    const minute =
+    Number(parts[1]);
+
+
+    if(
+        !Number.isFinite(hour)
+        ||
+        !Number.isFinite(minute)
+    ){
+
+        return null;
+
+    }
+
+
+    return (
+        hour * 60
+        +
+        minute
+    );
+
+}
+
+
+/* =========================================================
+   9. WEEKLY SCHEDULE HELPERS
+
+   true  = market runs
+   false = holiday
+========================================================= */
+
+function defaultWeeklySchedule(){
+
+    return {
+
+        sunday:true,
+        monday:true,
+        tuesday:true,
+        wednesday:true,
+        thursday:true,
+        friday:true,
+        saturday:true
+
+    };
+
+}
+
+
+function normalizeWeeklySchedule(value){
+
+    const fallback =
+    defaultWeeklySchedule();
+
+
+    if(
+        !value
+        ||
+        typeof value !==
+        "object"
+    ){
+
+        return fallback;
+
+    }
+
+
+    WEEK_DAYS.forEach(
+        function(day){
+
+            fallback[
+                day.key
+            ]
+            =
+            value[
+                day.key
+            ]
+            !==
+            false;
+
+        }
+    );
+
+
+    return fallback;
+
+}
+
+
+function currentWeekKey(){
+
+    return JS_DAY_TO_KEY[
+        new Date().getDay()
+    ];
+
+}
+
+
+/* =========================================================
+   10. INITIALIZE MARKETS
+
+   First run:
+   default 14 markets are created.
+
+   Existing data:
+   weekly schedule is normalized.
+========================================================= */
+
+function initializeMarkets(){
+
+    let markets =
+    getStorage(
+        "markets",
+        null
+    );
+
+
+    if(
+        !Array.isArray(markets)
+        ||
+        markets.length === 0
+    ){
+
+        markets =
+        DEFAULT_MARKETS.map(
+            function(item){
+
+                return {
+
+                    ...item,
+
+                    weeklySchedule:
+                    defaultWeeklySchedule(),
+
+                    manualStatus:
+                    "AUTO",
+
+                    gameStatus:
+                    "",
+
+                    lastResult:
+                    "",
+
+                    openPanel:
+                    "",
+
+                    openSingle:
+                    "",
+
+                    jodi:
+                    "",
+
+                    closeSingle:
+                    "",
+
+                    closePanel:
+                    "",
+
+                    resultStatus:
+                    "",
+
+                    resultType:
+                    "",
+
+                    sync:
+                    false,
+
+                    syncStatus:
+                    false,
+
+                    roundStartedAt:
+                    null
+
+                };
+
+            }
+        );
+
+
+        saveStorage(
+            "markets",
+            markets
+        );
+
+    }
+    else{
+
+        let changed =
+        false;
+
+
+        markets =
+        markets.map(
+            function(
+                item,
+                index
+            ){
+
+                if(
+                    !item
+                    ||
+                    typeof item !==
+                    "object"
+                ){
+
+                    changed =
+                    true;
+
+
+                    return {
+
+                        id:
+                        Date.now() + index,
+
+                        market:
+                        "MARKET " + (index + 1),
+
+                        openTime:
+                        "00:00",
+
+                        closeTime:
+                        "00:00",
+
+                        weeklySchedule:
+                        defaultWeeklySchedule()
+
+                    };
+
+                }
+
+
+                if(
+                    !item.weeklySchedule
+                ){
+
+                    item.weeklySchedule =
+                    defaultWeeklySchedule();
+
+                    changed =
+                    true;
+
+                }
+                else{
+
+                    item.weeklySchedule =
+                    normalizeWeeklySchedule(
+                        item.weeklySchedule
+                    );
+
+                }
+
+
+                if(
+                    upper(
+                        item.manualStatus
+                    )
+                    !==
+                    "AUTO"
+                ){
+
+                    item.manualStatus =
+                    "AUTO";
+
+                    changed =
+                    true;
+
+                }
+
+
+                return item;
+
+            }
+        );
+
+
+        if(changed){
+
+            saveStorage(
+                "markets",
+                markets
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   11. DATE HELPERS
+========================================================= */
+
+function parseDateKey(value){
+
+    const raw =
+    text(value);
+
+
+    if(!raw){
+
+        return "";
+
+    }
+
+
+    let match =
+    raw.match(
+        /^(\d{4})-(\d{1,2})-(\d{1,2})/
+    );
+
+
+    if(match){
+
+        return (
+            match[1]
+            +
+            "-"
+            +
+            String(
+                match[2]
+            )
+            .padStart(
+                2,
+                "0"
+            )
+            +
+            "-"
+            +
+            String(
+                match[3]
+            )
+            .padStart(
+                2,
+                "0"
+            )
+        );
+
+    }
+
+
+    match =
+    raw.match(
+        /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/
+    );
+
+
+    if(match){
+
+        return (
+            match[3]
+            +
+            "-"
+            +
+            String(
+                match[2]
+            )
+            .padStart(
+                2,
+                "0"
+            )
+            +
+            "-"
+            +
+            String(
+                match[1]
+            )
+            .padStart(
+                2,
+                "0"
+            )
+        );
+
+    }
+
+
+    const date =
+    new Date(raw);
+
+
+    if(
+        Number.isNaN(
+            date.getTime()
+        )
+    ){
+
+        return "";
+
+    }
+
+
+    return (
+        String(
+            date.getFullYear()
+        )
+        +
+        "-"
+        +
+        String(
+            date.getMonth() + 1
+        )
+        .padStart(
+            2,
+            "0"
+        )
+        +
+        "-"
+        +
+        String(
+            date.getDate()
+        )
+        .padStart(
+            2,
+            "0"
+        )
+    );
+
+}
+
+
+function todayKey(){
+
+    const now =
+    new Date();
+
+
+    return (
+        String(
+            now.getFullYear()
+        )
+        +
+        "-"
+        +
+        String(
+            now.getMonth() + 1
+        )
+        .padStart(
+            2,
+            "0"
+        )
+        +
+        "-"
+        +
+        String(
+            now.getDate()
+        )
+        .padStart(
+            2,
+            "0"
+        )
+    );
+
+}
+
+
+/* =========================================================
+   12. CHECK IF RESULT BELONGS TO TODAY
+========================================================= */
+
+function isTodayResult(result){
+
+    if(
+        !result
+        ||
+        typeof result !==
+        "object"
+    ){
+
+        return false;
+
+    }
+
+
+    const fields = [
+
+        result.date,
+        result.resultDate,
+        result.gameDate,
+        result.updatedAt,
+        result.lastUpdated
+
+    ];
+
+
+    for(
+        const field
+        of fields
+    ){
+
+        const key =
+        parseDateKey(
+            field
+        );
+
+
+        if(key){
+
+            return (
+                key ===
+                todayKey()
+            );
+
+        }
+
+    }
+
+
+    return false;
+
+}
+
+
+/* =========================================================
+   13. GET LATEST TODAY RESULT FOR ONE MARKET
+========================================================= */
+
+function getLatestTodayResult(
+    marketName
+){
+
+    const target =
+    upper(
+        marketName
+    );
+
+
+    const results =
+    getStorage(
+        "results",
+        []
+    );
+
+
+    if(
+        !Array.isArray(
+            results
+        )
+    ){
+
+        return null;
+
+    }
+
+
+    const matches =
+    results.filter(
+        function(item){
+
+            return (
+                item
+                &&
+                upper(
+                    item.market
+                    ||
+                    item.marketName
+                )
+                ===
+                target
+                &&
+                isTodayResult(
+                    item
+                )
+            );
+
+        }
+    );
+
+
+    if(
+        !matches.length
+    ){
+
+        return null;
+
+    }
+
+
+    matches.sort(
+        function(a,b){
+
+            const aTime =
+            Date.parse(
+                a.updatedAt
+                ||
+                a.lastUpdated
+                ||
+                a.dateTime
+                ||
+                ""
+            )
+            ||
+            Number(
+                a.timestamp
+                ||
+                0
+            );
+
+
+            const bTime =
+            Date.parse(
+                b.updatedAt
+                ||
+                b.lastUpdated
+                ||
+                b.dateTime
+                ||
+                ""
+            )
+            ||
+            Number(
+                b.timestamp
+                ||
+                0
+            );
+
+
+            return (
+                aTime
+                -
+                bTime
+            );
+
+        }
+    );
+
+
+    return matches[
+        matches.length - 1
+    ];
+
+}
+
+
+/* =========================================================
+   14. MARKET STATUS
+
+   Priority:
+   1. Weekly Holiday
+   2. Close time crossed = CLOSED
+   3. Open result exists without close = RUNNING CLOSE
+   4. Otherwise RUNNING
+========================================================= */
+
+function getMarketStatus(item){
+
+    const weekly =
+    normalizeWeeklySchedule(
+        item.weeklySchedule
+    );
+
+
+    const todayDay =
+    currentWeekKey();
+
+
+    if(
+        weekly[
+            todayDay
+        ]
+        ===
+        false
+    ){
+
+        return {
+
+            text:
+            "⚪ HOLIDAY",
+
+            className:
+            "statusHoliday",
+
+            holiday:
+            true
+
+        };
+
+    }
+
+
+    const closeMinutes =
+    timeToMinutes(
+        item.closeTime
+    );
+
+
+    const now =
+    new Date();
+
+
+    const currentMinutes =
+    now.getHours() * 60
+    +
+    now.getMinutes();
+
+
+    if(
+        closeMinutes !== null
+        &&
+        currentMinutes >= closeMinutes
+    ){
+
+        return {
+
+            text:
+            "🔴 CLOSED",
+
+            className:
+            "statusClosed",
+
+            holiday:
+            false
+
+        };
+
+    }
+
+
+    const todayResult =
+    getLatestTodayResult(
+        item.market
+    );
+
+
+    const hasOpen =
+    Boolean(
+        todayResult
+        &&
+        text(
+            todayResult.openPanel
+            ||
+            todayResult.openPana
+        )
+    );
+
+
+    const hasClose =
+    Boolean(
+        todayResult
+        &&
+        text(
+            todayResult.closePanel
+            ||
+            todayResult.closePana
+        )
+    );
+
+
+    if(
+        hasOpen
+        &&
+        !hasClose
+    ){
+
+        return {
+
+            text:
+            "🟠 RUNNING CLOSE",
+
+            className:
+            "statusRunningClose",
+
+            holiday:
+            false
+
+        };
+
+    }
+
+
+    return {
+
+        text:
+        "🟢 RUNNING",
+
+        className:
+        "statusRunning",
+
+        holiday:
+        false
+
+    };
+
+}
+
+
+/* =========================================================
+   15. LOAD MARKET TABLE
+========================================================= */
+
+function loadMarkets(){
+
+    let markets =
+    getStorage(
+        "markets",
+        []
+    );
+
+
+    if(
+        !Array.isArray(
+            markets
+        )
+    ){
+
+        markets = [];
+
+    }
+
+
+    markets.sort(
+        function(a,b){
+
+            return text(
+                a.openTime
+            )
+            .localeCompare(
+                text(
+                    b.openTime
+                )
+            );
+
+        }
+    );
+
+
+    document
+    .getElementById(
+        "totalMarket"
+    )
+    .innerText =
+    markets.length;
+
+
+    const table =
+    document
+    .getElementById(
+        "marketTable"
+    );
+
+
+    table.innerHTML = `
+
+        <tr>
+            <th>ID</th>
+            <th>Market</th>
+            <th>Open</th>
+            <th>Close</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+
+    `;
+
+
+    markets.forEach(
+        function(
+            item,
+            index
+        ){
+
+            const state =
+            getMarketStatus(
+                item
+            );
+
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td>
+                        ${text(item.market)}
+                    </td>
+
+                    <td>
+                        ${text(item.openTime)}
+                    </td>
+
+                    <td>
+                        ${text(item.closeTime)}
+                    </td>
+
+                    <td class="${state.className}">
+                        ${state.text}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="actionBtn weeklyBtn"
+                            onclick="openWeeklyHoliday(${Number(item.id)})"
+                        >
+                            📅 Weekly Holiday
+                        </button>
+
+                        <button
+                            class="actionBtn editBtn"
+                            onclick="editMarket(${Number(item.id)})"
+                        >
+                            ✏️ Edit
+                        </button>
+
+                        <button
+                            class="actionBtn deleteBtn"
+                            onclick="deleteMarket(${Number(item.id)})"
+                        >
+                            🗑️ Delete
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   16. SAVE / UPDATE MARKET
+========================================================= */
+
+function saveMarket(){
+
+    const marketName =
+    upper(
+        document
+        .getElementById(
+            "market"
+        )
+        .value
+    );
+
+
+    const openTime =
+    document
+    .getElementById(
+        "openTime"
+    )
+    .value;
+
+
+    const closeTime =
+    document
+    .getElementById(
+        "closeTime"
+    )
+    .value;
+
+
+    if(
+        !marketName
+        ||
+        !openTime
+        ||
+        !closeTime
+    ){
+
+        alert(
+            "Please Fill All Fields"
+        );
+
+        return;
+
+    }
+
+
+    let markets =
+    getStorage(
+        "markets",
+        []
+    );
+
+
+    if(
+        !Array.isArray(
+            markets
+        )
+    ){
+
+        markets = [];
+
+    }
+
+
+    const duplicate =
+    markets.some(
+        function(item){
+
+            return (
+                upper(
+                    item.market
+                )
+                ===
+                marketName
+                &&
+                Number(
+                    item.id
+                )
+                !==
+                Number(
+                    editingId
+                )
+            );
+
+        }
+    );
+
+
+    if(duplicate){
+
+        alert(
+            "Market Already Exists"
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       EDIT EXISTING MARKET
+    ===================================================== */
+
+    if(
+        editingId !==
+        null
+    ){
+
+        const item =
+        markets.find(
+            function(row){
+
+                return (
+                    Number(
+                        row.id
+                    )
+                    ===
+                    Number(
+                        editingId
+                    )
+                );
+
+            }
+        );
+
+
+        if(!item){
+
+            alert(
+                "Market Not Found"
+            );
+
+            return;
+
+        }
+
+
+        item.market =
+        marketName;
+
+
+        item.openTime =
+        openTime;
+
+
+        item.closeTime =
+        closeTime;
+
+
+        item.weeklySchedule =
+        normalizeWeeklySchedule(
+            item.weeklySchedule
+        );
+
+
+        item.manualStatus =
+        "AUTO";
+
+
+        item.lastUpdated =
+        new Date()
+        .toISOString();
+
+
+        showPopup(
+            marketName
+            +
+            " Updated Successfully"
+        );
+
+    }
+
+
+    /* =====================================================
+       ADD NEW MARKET
+    ===================================================== */
+
+    else{
+
+        markets.push({
+
+            id:
+            Date.now(),
+
+            market:
+            marketName,
+
+            openTime:
+            openTime,
+
+            closeTime:
+            closeTime,
+
+            weeklySchedule:
+            defaultWeeklySchedule(),
+
+            manualStatus:
+            "AUTO",
+
+            gameStatus:
+            "",
+
+            lastResult:
+            "",
+
+            openPanel:
+            "",
+
+            openSingle:
+            "",
+
+            jodi:
+            "",
+
+            closeSingle:
+            "",
+
+            closePanel:
+            "",
+
+            resultStatus:
+            "",
+
+            resultType:
+            "",
+
+            sync:
+            false,
+
+            syncStatus:
+            false,
+
+            roundStartedAt:
+            null,
+
+            lastUpdated:
+            new Date()
+            .toISOString()
+
+        });
+
+
+        showPopup(
+            marketName
+            +
+            " Added Successfully"
+        );
+
+    }
+
+
+    saveStorage(
+        "markets",
+        markets
+    );
+
+
+    clearForm();
+
+
+    loadMarkets();
+
+
+    syncMarketsToServer();
+
+}
+
+
+/* =========================================================
+   17. EDIT MARKET
+========================================================= */
+
+function editMarket(id){
+
+    const markets =
+    getStorage(
+        "markets",
+        []
+    );
+
+
+    const item =
+    Array.isArray(
+        markets
+    )
+    ?
+    markets.find(
+        function(row){
+
+            return (
+                Number(
+                    row.id
+                )
+                ===
+                Number(id)
+            );
+
+        }
+    )
+    :
+    null;
+
+
+    if(!item){
+
+        return;
+
+    }
+
+
+    editingId =
+    id;
+
+
+    document
+    .getElementById(
+        "market"
+    )
+    .value =
+    text(
+        item.market
+    );
+
+
+    document
+    .getElementById(
+        "openTime"
+    )
+    .value =
+    text(
+        item.openTime
+    );
+
+
+    document
+    .getElementById(
+        "closeTime"
+    )
+    .value =
+    text(
+        item.closeTime
+    );
+
+
+    window.scrollTo({
+
+        top:0,
+        behavior:"smooth"
+
+    });
+
+}
+
+
+/* =========================================================
+   18. DELETE MARKET
+========================================================= */
+
+function deleteMarket(id){
+
+    const markets =
+    getStorage(
+        "markets",
+        []
+    );
+
+
+    if(
+        !Array.isArray(
+            markets
+        )
+    ){
+
+        return;
+
+    }
+
+
+    const item =
+    markets.find(
+        function(row){
+
+            return (
+                Number(
+                    row.id
+                )
+                ===
+                Number(id)
+            );
+
+        }
+    );
+
+
+    if(!item){
+
+        return;
+
+    }
+
+
+    if(
+        !confirm(
+            "Delete "
+            +
+            text(
+                item.market
+            )
+            +
+            " ?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    const updated =
+    markets.filter(
+        function(row){
+
+            return (
+                Number(
+                    row.id
+                )
+                !==
+                Number(id)
+            );
+
+        }
+    );
+
+
+    saveStorage(
+        "markets",
+        updated
+    );
+
+
+    showPopup(
+        text(
+            item.market
+        )
+        +
+        " Deleted Successfully"
+    );
+
+
+    if(
+        Number(
+            editingId
+        )
+        ===
+        Number(id)
+    ){
+
+        clearForm();
+
+    }
+
+
+    loadMarkets();
+
+
+    syncMarketsToServer();
+
+}
+
+
+/* =========================================================
+   19. OPEN WEEKLY HOLIDAY
+========================================================= */
+
+function openWeeklyHoliday(id){
+
+    const markets =
+    getStorage(
+        "markets",
+        []
+    );
+
+
+    const item =
+    Array.isArray(
+        markets
+    )
+    ?
+    markets.find(
+        function(row){
+
+            return (
+                Number(
+                    row.id
+                )
+                ===
+                Number(id)
+            );
+
+        }
+    )
+    :
+    null;
+
+
+    if(!item){
+
+        return;
+
+    }
+
+
+    weeklyEditingId =
+    id;
+
+
+    document
+    .getElementById(
+        "weeklyMarketName"
+    )
+    .innerText =
+    text(
+        item.market
+    );
+
+
+    const schedule =
+    normalizeWeeklySchedule(
+        item.weeklySchedule
+    );
+
+
+    const container =
+    document
+    .getElementById(
+        "weekRows"
+    );
+
+
+    container.innerHTML =
+    "";
+
+
+    WEEK_DAYS.forEach(
+        function(day){
+
+            const row =
+            document
+            .createElement(
+                "div"
+            );
+
+
+            row.className =
+            "weekRow";
+
+
+            row.innerHTML = `
+
+                <div class="weekDay">
+                    ${day.label}
+                </div>
+
+                <label class="switch">
+
+                    <input
+                        type="checkbox"
+                        id="week_${day.key}"
+                        ${schedule[day.key] ? "checked" : ""}
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            `;
+
+
+            container.appendChild(
+                row
+            );
+
+        }
+    );
+
+
+    document
+    .getElementById(
+        "weeklyModal"
+    )
+    .style.display =
+    "flex";
+
+}
+
+
+/* =========================================================
+   20. CLOSE WEEKLY HOLIDAY
+========================================================= */
+
+function closeWeeklyModal(){
+
+    weeklyEditingId =
+    null;
+
+
+    document
+    .getElementById(
+        "weeklyModal"
+    )
+    .style.display =
+    "none";
+
+}
+
+
+/* =========================================================
+   21. SAVE WEEKLY HOLIDAY
+========================================================= */
+
+function saveWeeklyHoliday(){
+
+    if(
+        weeklyEditingId ===
+        null
+    ){
+
+        return;
+
+    }
+
+
+    let markets =
+    getStorage(
+        "markets",
+        []
+    );
+
+
+    if(
+        !Array.isArray(
+            markets
+        )
+    ){
+
+        return;
+
+    }
+
+
+    const item =
+    markets.find(
+        function(row){
+
+            return (
+                Number(
+                    row.id
+                )
+                ===
+                Number(
+                    weeklyEditingId
+                )
+            );
+
+        }
+    );
+
+
+    if(!item){
+
+        return;
+
+    }
+
+
+    const schedule =
+    {};
+
+
+    WEEK_DAYS.forEach(
+        function(day){
+
+            const input =
+            document
+            .getElementById(
+                "week_"
+                +
+                day.key
+            );
+
+
+            schedule[
+                day.key
+            ]
+            =
+            Boolean(
+                input
+                &&
+                input.checked
+            );
+
+        }
+    );
+
+
+    item.weeklySchedule =
+    schedule;
+
+
+    item.manualStatus =
+    "AUTO";
+
+
+    item.lastUpdated =
+    new Date()
+    .toISOString();
+
+
+    saveStorage(
+        "markets",
+        markets
+    );
+
+
+    closeWeeklyModal();
+
+
+    showPopup(
+        text(
+            item.market
+        )
+        +
+        " Weekly Holiday Saved"
+    );
+
+
+    loadMarkets();
+
+
+    syncMarketsToServer();
+
+}
+
+
+/* =========================================================
+   22. CLEAR FORM
+========================================================= */
+
+function clearForm(){
+
+    editingId =
+    null;
+
+
+    document
+    .getElementById(
+        "market"
+    )
+    .value =
+    "";
+
+
+    document
+    .getElementById(
+        "openTime"
+    )
+    .value =
+    "";
+
+
+    document
+    .getElementById(
+        "closeTime"
+    )
+    .value =
+    "";
+
+}
+
+
+/* =========================================================
+   23. SERVER SYNC
+
+   Sends current market list, market times and today's holiday
+   setting to Node server.
+
+   Existing source URL is intentionally preserved.
+========================================================= */
+
+async function syncMarketsToServer(){
+
+    const markets =
+    getStorage(
+        "markets",
+        []
+    );
+
+
+    if(
+        !Array.isArray(
+            markets
+        )
+        ||
+        !markets.length
+    ){
+
+        return;
+
+    }
+
+
+    const todayDay =
+    currentWeekKey();
+
+
+    const payload =
+    markets.map(
+        function(item){
+
+            const schedule =
+            normalizeWeeklySchedule(
+                item.weeklySchedule
+            );
+
+
+            return {
+
+                market:
+                text(
+                    item.market
+                ),
+
+                url:
+                "https://dpbosssss.boston/",
+
+                source:
+                "DPBOSS Boston",
+
+                openTime:
+                text(
+                    item.openTime
+                ),
+
+                closeTime:
+                text(
+                    item.closeTime
+                ),
+
+                holiday:
+                schedule[
+                    todayDay
+                ]
+                ===
+                false
+
+            };
+
+        }
+    );
+
+
+    try{
+
+        const response =
+        await fetch(
+
+            SERVER_BASE
+            +
+            "/api/auto/config",
+
+            {
+
+                method:
+                "POST",
+
+                headers:{
+
+                    "Content-Type":
+                    "application/json"
+
+                },
+
+                body:
+                JSON.stringify({
+
+                    markets:
+                    payload
+
+                })
+
+            }
+
+        );
+
+
+        const data =
+        await response.json();
+
+
+        if(
+            !response.ok
+            ||
+            !data.ok
+        ){
+
+            throw new Error(
+
+                data.message
+                ||
+                "Server sync failed"
+
+            );
+
+        }
+
+
+        console.log(
+
+            "✅ Market Setting -> Server Sync:",
+
+            data.total
+
+        );
+
+    }
+    catch(error){
+
+        console.warn(
+
+            "⚠ Market Setting Server Sync:",
+
+            String(
+                error.message
+                ||
+                error
+            )
+
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   24. LIVE STORAGE UPDATE
+
+   If markets/results change in another browser tab,
+   market table refreshes automatically.
+========================================================= */
+
+window.addEventListener(
+
+    "storage",
+
+    function(event){
+
+        if(
+            event.key ===
+            "markets"
+            ||
+            event.key ===
+            "results"
+        ){
+
+            loadMarkets();
+
+        }
+
+    }
+
+);
+
+
+/* =========================================================
+   25. 30 SECOND LOCAL STATUS REFRESH
+========================================================= */
+
+setInterval(
+
+    function(){
+
+        loadMarkets();
+
+    },
+
+    30000
+
+);
+
+
+/* =========================================================
+   26. 30 SECOND SERVER SYNC
+========================================================= */
+
+setInterval(
+
+    function(){
+
+        syncMarketsToServer();
+
+    },
+
+    30000
+
+);
+
+
+/* =========================================================
+   27. MARKET NAME AUTO FORMAT
+========================================================= */
+
+document
+.getElementById(
+    "market"
+)
+.addEventListener(
+
+    "blur",
+
+    function(){
+
+        this.value =
+        formatMarketName(
+            this.value
+        );
+
+    }
+
+);
+
+
+/* =========================================================
+   28. FIRST LOAD
+========================================================= */
+
+initializeMarkets();
+
+loadMarkets();
+
+setTimeout(
+    syncMarketsToServer,
+    1000
+);
+
+
+/* =========================================================
+   29. CONSOLE READY MESSAGES
+========================================================= */
+
+console.log(
+    "✅ HR MATKA Market Setting FINAL Connected"
+);
+
+console.log(
+    "✅ Admin Login Protection Connected"
+);
+
+console.log(
+    "✅ Weekly Holiday + Add/Edit/Delete Connected"
+);
+
+console.log(
+    "✅ Close Time => Immediate CLOSED Connected"
+);
+
+</script>
+
+
+</body>
+
+</html>
